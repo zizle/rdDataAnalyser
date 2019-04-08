@@ -124,7 +124,7 @@ class HRMainWindow(QMainWindow):
         self.status_bar.addPermanentWidget(self.window_label)
         self.setStatusBar(self.status_bar)  # 状态栏加入主窗口
         """定义主窗口大小"""
-        self.resize(1050, 680)
+        self.resize(1080, 680)
 
     def status_show_message(self, message):
         """状态栏显示子窗口相关信息的槽函数"""

@@ -3,16 +3,19 @@
 # author: zizle
 import datetime
 import re
-
+from collections import OrderedDict
 from PyQt5.QtWidgets import (
     QVBoxLayout, QHBoxLayout, QLabel, QComboBox, QSplitter, QDateEdit, QPushButton, QMessageBox
 )
-from PyQt5.QtCore import Qt, QDate, pyqtSignal
-from windows.ancestor import AncestorWindow, AncestorThread
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt5.QtWebChannel import QWebChannel
+from PyQt5.QtCore import Qt, QDate, pyqtSignal, QUrl
 
+from windows.ancestor import AncestorWindow, AncestorThread
 from draw.variety_price import MapWidget, TableWidget
 from settings import RESEARCH_LIB, GOODS_LIB, SHFE_PRODUCT_NAMES, CFFEX_PRODUCT_NAMES, DCE_PRODUCT_NAMES, CZCE_PRODUCT_NAMES
 from utils.generate_time import GenerateTime
+from widgets import ToolWidget
 
 
 class VarietyPriceWindow(AncestorWindow):
@@ -25,7 +28,7 @@ class VarietyPriceWindow(AncestorWindow):
         self.exchange_lib_thread_over = True
         self.selected_variety_thread_over = True
         """总布局"""
-        vertical_layout = QVBoxLayout()  # 总纵向布局
+        self.vertical_layout = QVBoxLayout()  # 总纵向布局
         top_select = QHBoxLayout()  # 顶部横向条件选择栏
         """交易所选择下拉框"""
         exchange_label = QLabel('选择交易所:')
@@ -60,6 +63,16 @@ class VarietyPriceWindow(AncestorWindow):
         top_select.addWidget(self.end_time)
         top_select.addWidget(self.confirm_button)
         """自定义部件"""
+        # 工具栏
+        self.tools = ToolWidget()
+        tool_btn = QPushButton("季节图表")
+        self.tool_view_all = QPushButton("返回总览")
+        self.tool_view_all.setEnabled(False)
+        self.tool_view_all.clicked.connect(self.return_view_all)
+        self.tools.addTool(tool_btn)
+        self.tools.addTool(self.tool_view_all)
+        self.tools.addSpacer()
+        tool_btn.clicked.connect(self.season_table)
         # 画布
         self.map_widget = MapWidget()
         # 表格
@@ -67,18 +80,26 @@ class VarietyPriceWindow(AncestorWindow):
         # 设置格式
         self.table_widget.set_style(header_labels=['日期', '价格', '成交量合计', '持仓量合计'])
         """创建QSplitter"""
-        show_splitter = QSplitter()
-        show_splitter.setOrientation(Qt.Vertical)  # 垂直拉伸
+        self.show_splitter = QSplitter()
+        self.show_splitter.setOrientation(Qt.Vertical)  # 垂直拉伸
         # 加入自定义控件
-        show_splitter.addWidget(self.map_widget)
-        show_splitter.addWidget(self.table_widget)
-        # show_splitter.addWidget(self.table_widget)
+        self.show_splitter.addWidget(self.map_widget)
+        self.show_splitter.addWidget(self.table_widget)
         """垂直布局添加布局和控件并设置到窗口"""
-        # vertical_layout.addLayout(self.title_hlayout)
-        vertical_layout.addLayout(top_select)
-        vertical_layout.addWidget(show_splitter)
+        self.vertical_layout.addLayout(top_select)
+        self.vertical_layout.addWidget(self.tools)
+        self.vertical_layout.addWidget(self.show_splitter)
+        # 加入控件
+        self.web_view = QWebEngineView()
+        self.web_view.load(QUrl("file:///static/html/variety_price.html"))
+        self.show_splitter.addWidget(self.web_view)
+        self.web_view.hide()  # 隐藏，刚开始不可见
+        """js交互通道"""
+        web_channel = QWebChannel(self.web_view.page())
+        self.web_view.page().setWebChannel(web_channel)  # 网页设置信息通道
+        web_channel.registerObject("season_table", self.tools)
 
-        self.setLayout(vertical_layout)
+        self.setLayout(self.vertical_layout)
 
     def fill_init_data(self):
         """填充交易所"""
@@ -242,6 +263,49 @@ class VarietyPriceWindow(AncestorWindow):
         self.cost_time = 0
         self.confirm_button.setText("确定")
         self.confirm_button.setEnabled(True)
+
+    def season_table(self):
+        """处理展示季节图表"""
+        # 获取表格的行数和列数 col-列，row-行
+        col_count = self.table_widget.columnCount()
+        row_count = self.table_widget.rowCount()
+        if not row_count:
+            return
+        # 隐藏与可见的处理
+        self.confirm_button.setEnabled(False)
+        self.map_widget.hide()
+        self.table_widget.hide()
+        self.web_view.show()
+        self.tool_view_all.setEnabled(True)
+        # 获取数据，处理数据，将结果数据传入页面展示
+        print("列数", col_count)
+        print("行数", row_count)
+        # 遍历获取数据
+        data = OrderedDict()
+        for row in range(row_count):
+            date = self.table_widget.item(row_count - 1, 0).text()
+            price = self.table_widget.item(row_count - 1, 1).text()
+            if date[:4] not in data.keys():
+                data[date[:4]] = []
+            else:
+                data[date[:4]].append([date, price])
+            # data.append((date, price))
+            # for col in range(col_count):
+            #     print(self.table_widget.item(row_count-1, col).text(), ' ', end='')
+            row_count -= 1
+
+        import json
+        data = json.dumps(data)
+        print(data, type(data))
+        self.tools.tool_click_signal.emit(data)
+
+    def return_view_all(self):
+        # 加入自定义控件
+        self.confirm_button.setEnabled(True)
+        self.web_view.hide()
+        self.map_widget.show()
+        self.table_widget.show()
+        self.tool_view_all.setEnabled(False)
 
 
 class ConfirmQueryThread(AncestorThread):

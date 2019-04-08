@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>品种价格指数季节图表</title>
+    <script type="text/javascript" src="../js/echarts.min.js"></script>
+    <script type="text/javascript" src="../js/qwebchannel.js"></script>
+    <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+    <style>
+        body{
+            background-color: rgb(250,250,250);
+        }
+    </style>
+</head>
+<body>
+    <div id="main" style="width: 1000px;height:300px;"></div>
+    <h4>品种价格指数季节图表</h4>
+    <p></p>
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+        // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('main'));
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: "趋势图"
+                },
+                tooltip: {},
+                legend: {
+                    data:['价格']
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                    },
+                    dataView: {readOnly: false},
+                    magicType: {type: ['line', 'bar']},
+                    restore: {},
+                    // saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    data: ["2018-10","2018-11","2018-12","2019-01","2019-02","2019-03"]
+                },
+                yAxis: {},
+                series: [{
+                    name: '价格',
+                    type: 'line',
+                    data: [2, 34, 68, 59, 59, 23]
+                }]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+
+
+        new QWebChannel(qt.webChannelTransport, function (channel) {
+            var season_table = channel.objects.season_table;
+            season_table.tool_click_signal.connect(function (str) {
+                var data = JSON.parse(str);
+                var s = "";
+                $.each(data, function (i, v) {
+                    $.each(data[i], function (ind, val) {
+                        s +="<div>" + val[0] + ":" + val[1];
+                        s += "</div>";
+                    })
+                })
+                $("p").html(s)
+
+
+            })
+        })
+    }
+</script>
+</html>
