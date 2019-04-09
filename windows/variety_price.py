@@ -1,6 +1,7 @@
 # _*_ coding:utf-8 _*_
 # company: RuiDa Futures
 # author: zizle
+import json
 import datetime
 import re
 from collections import OrderedDict
@@ -269,8 +270,8 @@ class VarietyPriceWindow(AncestorWindow):
         # 获取表格的行数和列数 col-列，row-行
         col_count = self.table_widget.columnCount()
         row_count = self.table_widget.rowCount()
-        if not row_count:
-            return
+        # if not row_count:
+        #     return
         # 隐藏与可见的处理
         self.confirm_button.setEnabled(False)
         self.map_widget.hide()
@@ -284,19 +285,68 @@ class VarietyPriceWindow(AncestorWindow):
         data = OrderedDict()
         for row in range(row_count):
             date = self.table_widget.item(row_count - 1, 0).text()
+            # date = date[:4] + "/" + date[4:6] + "/" + date[6:]
             price = self.table_widget.item(row_count - 1, 1).text()
             if date[:4] not in data.keys():
                 data[date[:4]] = []
-            else:
-                data[date[:4]].append([date, price])
-            # data.append((date, price))
+            data[date[:4]].append([date, price])
             # for col in range(col_count):
             #     print(self.table_widget.item(row_count-1, col).text(), ' ', end='')
             row_count -= 1
+        """将数据以月份为单位分开 {year:{month:[]}}"""
+        try:
+            month_data = OrderedDict()  # 创建一个字典存放数据
+            for year in data:  # 年为单位的数据
+                month_data[year] = {}
+                for year_item in data[year]:  # 每年的各个数据
+                    # 根据时间将数据重新整理
+                    month = year_item[0][4:6]
+                    if month not in month_data[year].keys():
+                        month_data[year][month] = []
+                    month_data[year][month].append(year_item)
 
-        import json
+            # month_data = json.dumps(month_data)
+            new_month_data = OrderedDict()
+            last_price = None
+            for y in month_data:
+                if y not in new_month_data:
+                    new_month_data[y] = OrderedDict()
+                for m in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']:
+                    one_month_data = month_data[y].get(m)
+                    if one_month_data:
+                        last = int(one_month_data[-1][1])
+                        # 计算涨跌
+                        up_down = None
+                        if last_price:
+                            up_down = "%.2f" % ((last - last_price) / last_price)
+                        last_price = last
+                        # 计算波幅
+                        data_set = []
+                        for item in one_month_data:
+                            data_set.append(int(item[1]))
+                        min_price = min(data_set)
+                        max_price = max(data_set)
+                        shock = "%.2f" % ((max_price - min_price) / min_price)  # 波幅
+
+                        new_month_data[y][m] = []
+                        new_month_data[y][m].append(up_down)
+                        new_month_data[y][m].append(shock)
+                    else:
+                        last_price = None
+
+            # new_month_data = json.dumps(new_month_data)
+            # print("new_month_data\n", new_month_data)
+
+            for year in new_month_data:
+                print(year, new_month_data[year])
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+
+        """处理展示表格需要的数据{year: {month: [up-down, shock]}}"""
+
         data = json.dumps(data)
-        print(data, type(data))
+        # print(data, type(data))
         self.tools.tool_click_signal.emit(data)
 
     def return_view_all(self):
