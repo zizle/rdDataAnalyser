@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>品种价格指数季节图表</title>
+    <script type="text/javascript" src="../js/echarts.min.js"></script>
+    <script type="text/javascript" src="../js/qwebchannel.js"></script>
+    <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+    <style>
+        body{
+            background-color: rgb(250,250,250);
+        }
+        table{
+            border-collapse:collapse;
+        }
+        table, td, th
+        {
+            border:1px solid black;
+        }
+        table td{
+            font-size: 12px;
+            text-align: center;
+        }
+        up {
+            background-color: firebrick;
+        }
+        down {
+            background-color: limegreen;
+        }
+    </style>
+</head>
+<body>
+    <div id="main" style="width: 1000px;height:300px;"></div>
+
+    <table>
+        <tr>
+            <th>年份</th>
+            <th colspan="2">1月</th>
+            <th colspan="2">2月</th>
+            <th colspan="2">3月</th>
+            <th colspan="2">4月</th>
+            <th colspan="2">5月</th>
+            <th colspan="2">6月</th>
+            <th colspan="2">7月</th>
+            <th colspan="2">8月</th>
+            <th colspan="2">9月</th>
+            <th colspan="2">10月</th>
+            <th colspan="2">11月</th>
+            <th colspan="2">12月</th>
+        </tr>
+        <tr>
+            <td></td>
+            <td>涨跌</td>
+            <td>波幅</td>
+            <td>涨跌</td>
+            <td>波幅</td>
+            <td>涨跌</td>
+            <td>波幅</td>
+            <td>涨跌</td>
+            <td>波幅</td>
+            <td>涨跌</td>
+            <td>波幅</td>
+            <td>涨跌</td>
+            <td>波幅</td>
+            <td>涨跌</td>
+            <td>波幅</td>
+            <td>涨跌</td>
+            <td>波幅</td>
+            <td>涨跌</td>
+            <td>波幅</td>
+            <td>涨跌</td>
+            <td>波幅</td>
+            <td>涨跌</td>
+            <td>波幅</td>
+            <td>涨跌</td>
+            <td>波幅</td>
+        </tr>
+        <tr>
+            <th>2018</th>
+            <td>-2.68%</td>
+            <td>-1.25%</td>
+            <td>1.03%</td>
+            <td>-0.26%</td>
+            <td>-2.68%</td>
+            <td>-1.25%</td>
+            <td>1.03%</td>
+            <td>-0.26%</td>
+            <td>-2.68%</td>
+            <td>-1.25%</td>
+            <td>1.03%</td>
+            <td>-0.26%</td>
+            <td>-2.68%</td>
+            <td>-1.25%</td>
+            <td>1.03%</td>
+            <td>-0.26%</td>
+            <td>1.03%</td>
+            <td>-1.25%</td>
+            <td>1.03%</td>
+            <td>-0.26%</td>
+            <td>-2.68%</td>
+            <td>-1.25%</td>
+            <td>-2.68%</td>
+            <td>-0.26%</td>
+        </tr>
+        <tr>
+            <th>2017</th>
+            <td>-2.68%</td>
+            <td>1.03%</td>
+            <td>1.03%</td>
+            <td>-0.26%</td>
+            <td>-2.68%</td>
+            <td>-1.25%</td>
+            <td>1.03%</td>
+            <td>-0.26%</td>
+            <td>-2.68%</td>
+            <td>-1.25%</td>
+            <td>1.03%</td>
+            <td>-0.26%</td>
+            <td>-2.68%</td>
+            <td>-1.25%</td>
+            <td>1.03%</td>
+            <td>-0.26%</td>
+            <td>-2.68%</td>
+            <td>-1.25%</td>
+            <td>-0.26%</td>
+            <td>-0.26%</td>
+            <td>1.03%</td>
+            <td>-1.25%</td>
+            <td>1.03%</td>
+            <td>-0.26%</td>
+        </tr>
+
+    </table>
+
+
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+        // 展示表格
+        $("table td").each(function () {
+            var num = parseFloat($(this).html());
+            if(num && num < 0){
+                $(this).css("background-color","firebrick")
+            }else if (num && num>0){
+                $(this).css("background-color","limegreen")
+            }
+        });
+
+
+
+        new QWebChannel(qt.webChannelTransport, function (channel) {
+            var season_table = channel.objects.season_table;
+            season_table.tool_click_signal.connect(function (str) {
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById('main'));
+                // 指定图表的配置项和数据
+                var option = {
+                    title: {
+                        text: "季节图表"
+                    },
+                    tooltip: {},
+                    legend: {
+                        data:[]
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                        dataZoom: {
+                            yAxisIndex: 'none'
+                        },
+                        dataView: {readOnly: false},
+                        magicType: {type: ['line', 'bar']},
+                        restore: {},
+                        // saveAsImage: {}
+                        }
+                    },
+                    xAxis: {
+
+                        data: ["2018-10","2018-11","2018-12","2019-01","2019-02","2019-03"]
+                    },
+                    yAxis: {},
+                    series: [
+                    //     {
+                    //     name: '价格',
+                    //     type: 'line',
+                    //     // data: [2, 34, 68, 59, 59, 23]
+                    //     data: []
+                    // }
+                    ]
+                };
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+
+                var data = JSON.parse(str);  // json数据
+                // json数据解析呈现画图
+                // 获取每年的数据
+                $.each(data, function (year, yearVal) {  // i为年份，v为年份对应的具体数据， 每个year和yearVal的数据对应生成一条折线
+                    // 设置配置, year是折线名字， yearVal是具体数据，索引0是横坐标，索引1是纵坐标
+                    var data_Y = [];
+                    var data_X = [];
+                    $.each(yearVal, function (index, value) {
+                        data_X.push(value[0]);  // TODO value[0]需改为时间格式
+                        data_Y.push(value[1]);
+                    });
+                    // 配置数据option
+                    option.legend.data.push(year);
+                    option.xAxis = {data:data_X};  // TODO x坐标显示需统一
+                    option.yAxis = {
+                        min:"dataMin",
+                        max:"dataMax"
+                    };
+                    option.series.push({
+                        name: year,
+                        type: 'line',
+                        data: data_Y
+                    });
+                    return false;  // 只显示第一年（暂无策略展示）
+                });
+                myChart.setOption(option);
+                myChart.restore();
+
+                var s = "";
+                $.each(data, function (i, v) {
+                    $.each(data[i], function (ind, val) {
+                        s +="<div>" + val[0] + ":" + val[1];
+                        s += "</div>";
+                    })
+                });
+                $("p").html(s)
+
+
+            })
+        })
+    }
+</script>
+</html>

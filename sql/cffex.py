@@ -196,7 +196,8 @@ class CFFEXWorker(DataBaseWorker):
         item = self.worker.query(CFFEXPrice).filter(CFFEXPrice.name == variety, CFFEXPrice.date == date).first()
         if not item:
             return ()
-        return date, item.variety_price, item.volume, item.holdings
+        price = round(item.variety_price)
+        return date, price, item.volume, item.holdings
 
     def main_contract_price(self, date, variety):
         """查询指定时间段主力合约价格指数"""
