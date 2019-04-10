@@ -8,152 +8,139 @@
     <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
     <style>
         body{
-            background-color: rgb(250,250,250);
+            background-color: rgb(240,240,240);
         }
         table{
             border-collapse:collapse;
+            margin: 0 auto;
+            cursor: default;
+        }
+        table th{
+            font-size: 13px;
         }
         table, td, th
         {
             border:1px solid black;
+            padding: 1px 3px;
         }
         table td{
             font-size: 12px;
             text-align: center;
         }
-        up {
-            background-color: firebrick;
-        }
-        down {
-            background-color: limegreen;
-        }
     </style>
 </head>
 <body>
-    <div id="main" style="width: 1000px;height:300px;"></div>
+    <div id="main" style="width:100%;height:400px;"></div>
 
     <table>
-        <tr>
-            <th>年份</th>
-            <th colspan="2">1月</th>
-            <th colspan="2">2月</th>
-            <th colspan="2">3月</th>
-            <th colspan="2">4月</th>
-            <th colspan="2">5月</th>
-            <th colspan="2">6月</th>
-            <th colspan="2">7月</th>
-            <th colspan="2">8月</th>
-            <th colspan="2">9月</th>
-            <th colspan="2">10月</th>
-            <th colspan="2">11月</th>
-            <th colspan="2">12月</th>
-        </tr>
-        <tr>
-            <td></td>
-            <td>涨跌</td>
-            <td>波幅</td>
-            <td>涨跌</td>
-            <td>波幅</td>
-            <td>涨跌</td>
-            <td>波幅</td>
-            <td>涨跌</td>
-            <td>波幅</td>
-            <td>涨跌</td>
-            <td>波幅</td>
-            <td>涨跌</td>
-            <td>波幅</td>
-            <td>涨跌</td>
-            <td>波幅</td>
-            <td>涨跌</td>
-            <td>波幅</td>
-            <td>涨跌</td>
-            <td>波幅</td>
-            <td>涨跌</td>
-            <td>波幅</td>
-            <td>涨跌</td>
-            <td>波幅</td>
-            <td>涨跌</td>
-            <td>波幅</td>
-        </tr>
-        <tr>
-            <th>2018</th>
-            <td>-2.68%</td>
-            <td>-1.25%</td>
-            <td>1.03%</td>
-            <td>-0.26%</td>
-            <td>-2.68%</td>
-            <td>-1.25%</td>
-            <td>1.03%</td>
-            <td>-0.26%</td>
-            <td>-2.68%</td>
-            <td>-1.25%</td>
-            <td>1.03%</td>
-            <td>-0.26%</td>
-            <td>-2.68%</td>
-            <td>-1.25%</td>
-            <td>1.03%</td>
-            <td>-0.26%</td>
-            <td>1.03%</td>
-            <td>-1.25%</td>
-            <td>1.03%</td>
-            <td>-0.26%</td>
-            <td>-2.68%</td>
-            <td>-1.25%</td>
-            <td>-2.68%</td>
-            <td>-0.26%</td>
-        </tr>
-        <tr>
-            <th>2017</th>
-            <td>-2.68%</td>
-            <td>1.03%</td>
-            <td>1.03%</td>
-            <td>-0.26%</td>
-            <td>-2.68%</td>
-            <td>-1.25%</td>
-            <td>1.03%</td>
-            <td>-0.26%</td>
-            <td>-2.68%</td>
-            <td>-1.25%</td>
-            <td>1.03%</td>
-            <td>-0.26%</td>
-            <td>-2.68%</td>
-            <td>-1.25%</td>
-            <td>1.03%</td>
-            <td>-0.26%</td>
-            <td>-2.68%</td>
-            <td>-1.25%</td>
-            <td>-0.26%</td>
-            <td>-0.26%</td>
-            <td>1.03%</td>
-            <td>-1.25%</td>
-            <td>1.03%</td>
-            <td>-0.26%</td>
-        </tr>
+        <!--<tr>-->
+            <!--<th>年份</th>-->
+            <!--<th colspan="2">1月</th>-->
+            <!--<th colspan="2">2月</th>-->
+            <!--<th colspan="2">3月</th>-->
+            <!--<th colspan="2">4月</th>-->
+            <!--<th colspan="2">5月</th>-->
+            <!--<th colspan="2">6月</th>-->
+            <!--<th colspan="2">7月</th>-->
+            <!--<th colspan="2">8月</th>-->
+            <!--<th colspan="2">9月</th>-->
+            <!--<th colspan="2">10月</th>-->
+            <!--<th colspan="2">11月</th>-->
+            <!--<th colspan="2">12月</th>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<td></td>-->
+            <!--<td>涨跌</td>-->
+            <!--<td>波幅</td>-->
+            <!--<td>涨跌</td>-->
+            <!--<td>波幅</td>-->
+            <!--<td>涨跌</td>-->
+            <!--<td>波幅</td>-->
+            <!--<td>涨跌</td>-->
+            <!--<td>波幅</td>-->
+            <!--<td>涨跌</td>-->
+            <!--<td>波幅</td>-->
+            <!--<td>涨跌</td>-->
+            <!--<td>波幅</td>-->
+            <!--<td>涨跌</td>-->
+            <!--<td>波幅</td>-->
+            <!--<td>涨跌</td>-->
+            <!--<td>波幅</td>-->
+            <!--<td>涨跌</td>-->
+            <!--<td>波幅</td>-->
+            <!--<td>涨跌</td>-->
+            <!--<td>波幅</td>-->
+            <!--<td>涨跌</td>-->
+            <!--<td>波幅</td>-->
+            <!--<td>涨跌</td>-->
+            <!--<td>波幅</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<th>2018</th>-->
+            <!--<td>-2.68%</td>-->
+            <!--<td>-1.25%</td>-->
+            <!--<td>1.03%</td>-->
+            <!--<td>-0.26%</td>-->
+            <!--<td>-2.68%</td>-->
+            <!--<td>-1.25%</td>-->
+            <!--<td>1.03%</td>-->
+            <!--<td>-0.26%</td>-->
+            <!--<td>-2.68%</td>-->
+            <!--<td>-1.25%</td>-->
+            <!--<td>1.03%</td>-->
+            <!--<td>-0.26%</td>-->
+            <!--<td>-2.68%</td>-->
+            <!--<td>-1.25%</td>-->
+            <!--<td>1.03%</td>-->
+            <!--<td>-0.26%</td>-->
+            <!--<td>1.03%</td>-->
+            <!--<td>-1.25%</td>-->
+            <!--<td>1.03%</td>-->
+            <!--<td>-0.26%</td>-->
+            <!--<td>-2.68%</td>-->
+            <!--<td>-1.25%</td>-->
+            <!--<td>-2.68%</td>-->
+            <!--<td>-0.26%</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<th>2017</th>-->
+            <!--<td>-2.68%</td>-->
+            <!--<td>1.03%</td>-->
+            <!--<td>1.03%</td>-->
+            <!--<td>-0.26%</td>-->
+            <!--<td>-2.68%</td>-->
+            <!--<td>-1.25%</td>-->
+            <!--<td>1.03%</td>-->
+            <!--<td>-0.26%</td>-->
+            <!--<td>-2.68%</td>-->
+            <!--<td>-1.25%</td>-->
+            <!--<td>1.03%</td>-->
+            <!--<td>-0.26%</td>-->
+            <!--<td>-2.68%</td>-->
+            <!--<td>-1.25%</td>-->
+            <!--<td>1.03%</td>-->
+            <!--<td>-0.26%</td>-->
+            <!--<td>-2.68%</td>-->
+            <!--<td>-1.25%</td>-->
+            <!--<td>-0.26%</td>-->
+            <!--<td>-0.26%</td>-->
+            <!--<td>1.03%</td>-->
+            <!--<td>-1.25%</td>-->
+            <!--<td>1.03%</td>-->
+            <!--<td>-0.26%</td>-->
+        <!--</tr>-->
 
     </table>
-
-
+    <p></p>
 </body>
 <script type="text/javascript">
     window.onload = function () {
-        // 展示表格
-        $("table td").each(function () {
-            var num = parseFloat($(this).html());
-            if(num && num < 0){
-                $(this).css("background-color","firebrick")
-            }else if (num && num>0){
-                $(this).css("background-color","limegreen")
-            }
-        });
-
-
-
         new QWebChannel(qt.webChannelTransport, function (channel) {
             var season_table = channel.objects.season_table;
-            season_table.tool_click_signal.connect(function (str) {
+            season_table.tool_click_signal.connect(function (strData) {
                 // 基于准备好的dom，初始化echarts实例
                 var myChart = echarts.init(document.getElementById('main'));
-                // 指定图表的配置项和数据
+                // 指定图表的全局配置项和数据
                 var option = {
                     title: {
                         text: "季节图表"
@@ -175,8 +162,7 @@
                         }
                     },
                     xAxis: {
-
-                        data: ["2018-10","2018-11","2018-12","2019-01","2019-02","2019-03"]
+                        data: []
                     },
                     yAxis: {},
                     series: [
@@ -191,46 +177,156 @@
                 // 使用刚指定的配置项和数据显示图表。
                 myChart.setOption(option);
 
-                var data = JSON.parse(str);  // json数据
-                // json数据解析呈现画图
-                // 获取每年的数据
-                $.each(data, function (year, yearVal) {  // i为年份，v为年份对应的具体数据， 每个year和yearVal的数据对应生成一条折线
-                    // 设置配置, year是折线名字， yearVal是具体数据，索引0是横坐标，索引1是纵坐标
-                    var data_Y = [];
-                    var data_X = [];
-                    $.each(yearVal, function (index, value) {
-                        data_X.push(value[0]);  // TODO value[0]需改为时间格式
-                        data_Y.push(value[1]);
-                    });
-                    // 配置数据option
-                    option.legend.data.push(year);
-                    option.xAxis = {data:data_X};  // TODO x坐标显示需统一
-                    option.yAxis = {
-                        min:"dataMin",
-                        max:"dataMax"
-                    };
-                    option.series.push({
-                        name: year,
-                        type: 'line',
-                        data: data_Y
-                    });
-                    return false;  // 只显示第一年（暂无策略展示）
+                var data = JSON.parse(strData);  // json数据
+                // 表格需要的行数,以及相应的年份
+                var years = getYears(data.result);  // 具体的年份数组
+                // 创建表格
+                var tableContent = "<tr><th></th><th colspan=\"2\">1月</th><th colspan=\"2\">2月</th><th colspan=\"2\">3月</th><th colspan=\"2\">4月</th><th colspan=\"2\">5月</th>" +
+                    "<th colspan=\"2\">6月</th><th colspan=\"2\">7月</th><th colspan=\"2\">8月</th><th colspan=\"2\">9月</th><th colspan=\"2\">10月</th><th colspan=\"2\">11月</th>" +
+                    "<th colspan=\"2\">12月</th></tr>" +
+                    "<tr><th>年份</th><td>涨跌</td><td>波幅</td><td>涨跌</td><td>波幅</td><td>涨跌</td><td>波幅</td><td>涨跌</td><td>波幅</td><td>涨跌</td><td>波幅</td><td>涨跌</td><td>波幅</td>" +
+                    "<td>涨跌</td><td>波幅</td><td>涨跌</td><td>波幅</td><td>涨跌</td><td>波幅</td><td>涨跌</td><td>波幅</td><td>涨跌</td><td>波幅</td><td>涨跌</td><td>波幅</td></tr>";
+                $.each(years, function (i, y) {
+                    tableContent += "<tr><th>"+ y +"</th>" +
+                        "<td id="+y+'01up'+"></td><td id="+y+'01shock'+"></td>" +
+                        "<td id="+y+'02up'+"></td><td id="+y+'02shock'+"></td>" +
+                        "<td id="+y+'03up'+"></td><td id="+y+'03shock'+"></td>" +
+                        "<td id="+y+'04up'+"></td><td id="+y+'04shock'+"></td>" +
+                        "<td id="+y+'05up'+"></td><td id="+y+'05shock'+"></td>" +
+                        "<td id="+y+'06up'+"></td><td id="+y+'06shock'+"></td>" +
+                        "<td id="+y+'07up'+"></td><td id="+y+'07shock'+"></td>" +
+                        "<td id="+y+'08up'+"></td><td id="+y+'08shock'+"></td>" +
+                        "<td id="+y+'09up'+"></td><td id="+y+'09shock'+"></td>" +
+                        "<td id="+y+'10up'+"></td><td id="+y+'10shock'+"></td>" +
+                        "<td id="+y+'11up'+"></td><td id="+y+'11shock'+"></td>" +
+                        "<td id="+y+'12up'+"></td><td id="+y+'12shock'+"></td>" +
+                        "</tr>"
                 });
-                myChart.setOption(option);
-                myChart.restore();
-
+                $("table").html(tableContent);
+                // 获取处理好的数据，用于展示表格
                 var s = "";
-                $.each(data, function (i, v) {
-                    $.each(data[i], function (ind, val) {
-                        s +="<div>" + val[0] + ":" + val[1];
-                        s += "</div>";
+                $.each(data.result, function (year, yearVal) {
+                    // yearVal为每年的具体数据{month:[up_down, shock], ...}
+                    $.each(yearVal, function (month, monthItem) {
+                        if ("01" == month){
+                            $("#"+year+"01up").html(monthItem[0] + "%");
+                            $("#"+year+"01shock").html(monthItem[1] + "%");
+                            s+="<div>" + year + "年01月:涨跌" +monthItem[0] +"，波幅:" + monthItem[1] +"</div>";
+                        }else if ("02" == month){
+                            $("#"+year+"02up").html(monthItem[0] + "%");
+                            $("#"+year+"02shock").html(monthItem[1] + "%");
+                            s+="<div>" + year + "年02月:涨跌" +monthItem[0] +"，波幅:" + monthItem[1] +"</div>";
+                        }else if ("03" == month){
+                            $("#"+year+"03up").html(monthItem[0] + "%");
+                            $("#"+year+"03shock").html(monthItem[1] + "%");
+                            s+="<div>" + year + "年03月:涨跌" +monthItem[0] +"，波幅:" + monthItem[1] +"</div>";
+                        }else if ("04" == month){
+                            $("#"+year+"04up").html(monthItem[0] + "%");
+                            $("#"+year+"04shock").html(monthItem[1] + "%");
+                            s+="<div>" + year + "年04月:涨跌" +monthItem[0] +"，波幅:" + monthItem[1] +"</div>";
+                        }else if ("05" == month){
+                            $("#"+year+"05up").html(monthItem[0] + "%");
+                            $("#"+year+"05shock").html(monthItem[1] + "%");
+                            s+="<div>" + year + "年05月:涨跌" +monthItem[0] +"，波幅:" + monthItem[1] +"</div>";
+                        }else if ("06" == month){
+                            $("#"+year+"06up").html(monthItem[0] + "%");
+                            $("#"+year+"06shock").html(monthItem[1] + "%");
+                            s+="<div>" + year + "年06月:涨跌" +monthItem[0] +"，波幅:" + monthItem[1] +"</div>";
+                        }else if ("07" == month){
+                            $("#"+year+"07up").html(monthItem[0] + "%");
+                            $("#"+year+"07shock").html(monthItem[1] + "%");
+                            s+="<div>" + year + "年07月:涨跌" +monthItem[0] +"，波幅:" + monthItem[1] +"</div>";
+                        }else if ("08" == month){
+                            $("#"+year+"08up").html(monthItem[0] + "%");
+                            $("#"+year+"08shock").html(monthItem[1] + "%");
+                            s+="<div>" + year + "年08月:涨跌" +monthItem[0] +"，波幅:" + monthItem[1] +"</div>";
+                        }else if ("09" == month){
+                            $("#"+year+"09up").html(monthItem[0] + "%");
+                            $("#"+year+"09shock").html(monthItem[1] + "%");
+                            s+="<div>" + year + "年09月:涨跌" +monthItem[0] +"，波幅:" + monthItem[1] +"</div>";
+                        }else if ("10" == month){
+                            $("#"+year+"10up").html(monthItem[0] + "%");
+                            $("#"+year+"10shock").html(monthItem[1] + "%");
+                            s+="<div>" + year + "年10月:涨跌" +monthItem[0] +"，波幅:" + monthItem[1] +"</div>";
+                        }else if ("11" == month){
+                            $("#"+year+"11up").html(monthItem[0] + "%");
+                            $("#"+year+"11shock").html(monthItem[1] + "%");
+                            s+="<div>" + year + "年11月:涨跌" +monthItem[0] +"，波幅:" + monthItem[1] +"</div>";
+                        }else if ("12" == month){
+                            $("#"+year+"12up").html(monthItem[0] + "%");
+                            $("#"+year+"12shock").html(monthItem[1] + "%");
+                            s+="<div>" + year + "年12月:涨跌" +monthItem[0] +"，波幅:" + monthItem[1] +"</div>";
+                        }
+                    });
+                });
+                // $("p").html(s)
+                // 处理表格颜色
+                var upReg = new RegExp(".*up$");
+                var shockReg = new RegExp(".*shock");
+                $("table td").each(function () {
+                    var tdId = $(this).attr("id");
+                    if (upReg.test(tdId)){
+                        var num = parseFloat($(this).html());
+                        if(num && num < 0){
+                            $(this).css("background-color","#921F28")
+                            $(this).css("color","#FFFFFF")
+                        }else if (num && num>0){
+                            $(this).css("background-color","#14B438")
+                            $(this).css("color","#FFFFFF")
+                        }
+                    }
+                });
+                $("table td").hover(function () {
+                    var tdId = $(this).attr("id");
+                    var text = tdId.substr(0,4) + "年" + tdId.substr(4,2) + "月";
+                    if (upReg.test(tdId)){
+                        $(this).attr("title", text + "\n涨跌：" + $(this).html())
+                    }else if (shockReg.test(tdId)){
+                        $(this).attr("title", text + "\n波幅：" + $(this).html())
+                    }
+                })
+
+                // json数据解析呈现画图
+                var axisX = data.xaxis;  // x 坐标
+                option.xAxis = {data: axisX};
+                option.yAxis = {
+                    // min:"dataMin",
+                    // max:"dataMax",
+                    // minInterval: 1,
+                    scale:true
+                };
+                option.legend = {
+                    data:[],
+                    orient: 'vertical',
+                    y: 'center',
+                    x: 'right' //居右显示
+                };
+                $.each(data.mapData, function (year, yearData) {
+                    option.legend.data.push(year);
+                    option.series.push({
+                        tooltip:{
+                            show: true
+                        },
+                        symbol: "none",
+                        name: year,
+                        type: "line",
+                        data: yearData
                     })
                 });
-                $("p").html(s)
-
-
+                myChart.clear();
+                myChart.setOption(option);
+                myChart.restore();
             })
         })
+    };
+    function getYears(data) {
+        var years = [];
+        $.each(data, function (k, v) {
+            years.push(k);
+
+        });
+        return years;
     }
+
 </script>
 </html>
