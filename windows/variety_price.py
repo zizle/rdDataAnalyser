@@ -293,61 +293,86 @@ class VarietyPriceWindow(AncestorWindow):
             # for col in range(col_count):
             #     print(self.table_widget.item(row_count-1, col).text(), ' ', end='')
             row_count -= 1
-        """将数据以月份为单位分开 {year:{month:[]}}"""
-        try:
-            month_data = OrderedDict()  # 创建一个字典存放数据
-            for year in data:  # 年为单位的数据
-                month_data[year] = {}
-                for year_item in data[year]:  # 每年的各个数据
-                    # 根据时间将数据重新整理
-                    month = year_item[0][4:6]
-                    if month not in month_data[year].keys():
-                        month_data[year][month] = []
-                    month_data[year][month].append(year_item)
+        """生成横坐标,整理用于作折线的原始数据，结果的结构{year:[[date, value], [date, value],...]}"""
+        map_data = OrderedDict()  # 用于作图的数据集
+        axis_x = self.generate_axis_x()
+        for year in data:
+            map_data[year] = []
+            for x in axis_x:
+                for year_item in data[year]:
+                    if x == year_item[0][4:]:
+                        map_data[year].append([x, year_item[1]])
+                    # elif x != year_item[0][4:]:
+                    #     map_data[year].append([x, '-'])
+                #
+                #         map_data[year].append([x, year_item[1]])
+                #     else:
+                #         map_data[year].append([x, '-'])
 
-            # month_data = json.dumps(month_data)
-            new_month_data = OrderedDict()
-            last_price = None
-            for y in month_data:
-                if y not in new_month_data:
-                    new_month_data[y] = OrderedDict()
-                for m in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']:
-                    one_month_data = month_data[y].get(m)
-                    if one_month_data:
-                        last = int(one_month_data[-1][1])
-                        # 计算涨跌
-                        up_down = None
-                        if last_price:
-                            up_down = "%.2f" % ((last - last_price) / last_price)
-                        last_price = last
-                        # 计算波幅
-                        data_set = []
-                        for item in one_month_data:
-                            data_set.append(int(item[1]))
-                        min_price = min(data_set)
-                        max_price = max(data_set)
-                        shock = "%.2f" % ((max_price - min_price) / min_price)  # 波幅
+            # print(map_data[year])
+            # print('==='*10)
+        # print("map_data\n", map_data)
+        """将数据以月份为单位分开，结果的结构 {year:{month:[up_down, shock]}}"""
+        month_data = OrderedDict()  # 创建一个字典存放数据
+        for year in data:  # 年为单位的数据
+            month_data[year] = {}
+            for year_item in data[year]:  # 每年的各个数据
+                # 根据时间将数据重新整理
+                month = year_item[0][4:6]
+                if month not in month_data[year].keys():
+                    month_data[year][month] = []
+                month_data[year][month].append(year_item)  # month_data = json.dumps(month_data)  # {year:{month:[[date, price], ...]}}
+        new_month_data = OrderedDict()
+        last_price = None
+        for y in month_data:  # {year:{month:[[date, price], ...]}}
+            if y not in new_month_data:
+                new_month_data[y] = OrderedDict()
+            for m in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']:
+                one_month_data = month_data[y].get(m)
+                if one_month_data:
+                    last = int(one_month_data[-1][1])
+                    # 计算涨跌
+                    up_down = None
+                    if last_price:
+                        up_down = "%.4f" % ((last - last_price) / last_price)
+                        up_down = "%.2f" % (float(up_down) * 100)
+                    last_price = last
+                    # 计算波幅
+                    data_set = []
+                    for item in one_month_data:
+                        data_set.append(int(item[1]))
+                    min_price = min(data_set)
+                    max_price = max(data_set)
+                    shock = "%.4f" % ((max_price - min_price) / min_price)  # 波幅
+                    shock = "%.2f" % (float(shock) * 100)
+                    new_month_data[y][m] = []
+                    new_month_data[y][m].append(up_down)
+                    new_month_data[y][m].append(shock)
+                else:
+                    last_price = None
 
-                        new_month_data[y][m] = []
-                        new_month_data[y][m].append(up_down)
-                        new_month_data[y][m].append(shock)
-                    else:
-                        last_price = None
+        # 整理数据
 
-            # new_month_data = json.dumps(new_month_data)
-            # print("new_month_data\n", new_month_data)
+        finally_data = dict()
+        finally_data["raw"] = data
+        finally_data["result"] = new_month_data
+        finally_data["xaxis"] = axis_x
+        finally_data["mapData"] = map_data
+        finally_data = json.dumps(finally_data)
+        print(finally_data)
+        self.tools.tool_click_signal.emit(finally_data)  # 数据传到页面
 
-            for year in new_month_data:
-                print(year, new_month_data[year])
-        except Exception as e:
-            import traceback
-            traceback.print_exc()
-
-        """处理展示表格需要的数据{year: {month: [up-down, shock]}}"""
-
-        data = json.dumps(data)
+        # new_month_data = json.dumps(new_month_data)
+        # print("new_month_data\n", new_month_data)
+        #
+        # # for year in new_month_data:
+        # #     print(year, new_month_data[year])
+        #
+        #
+        #
+        # data = json.dumps(data)
         # print(data, type(data))
-        self.tools.tool_click_signal.emit(data)
+        # self.tools.tool_click_signal.emit(data)
 
     def return_view_all(self):
         # 加入自定义控件
@@ -356,6 +381,16 @@ class VarietyPriceWindow(AncestorWindow):
         self.map_widget.show()
         self.table_widget.show()
         self.tool_view_all.setEnabled(False)
+
+    @staticmethod
+    def generate_axis_x():
+        """生成横坐标数据, 以闰年计"""
+        start_day = datetime.datetime.strptime("20160101", "%Y%m%d")
+        end_day = datetime.datetime.strptime("20161231", "%Y%m%d")
+        axis_x = []
+        for date in GenerateTime(begin=start_day, end=end_day).generate_time():
+            axis_x.append(date[4:])
+        return axis_x
 
 
 class ConfirmQueryThread(AncestorThread):

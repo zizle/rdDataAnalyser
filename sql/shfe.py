@@ -295,7 +295,8 @@ class SHFEWorker(DataBaseWorker):
         item = self.worker.query(SHFEPrice).filter(SHFEPrice.name == variety, SHFEPrice.date == date).first()
         if not item:
             return ()
-        return date, item.variety_price, item.volume, item.holdings
+        price = round(item.variety_price)
+        return date, price, item.volume, item.holdings
 
     def main_contract_price(self, date, variety):
         """查询指定时间段主力合约价格指数"""
