@@ -293,30 +293,46 @@ class VarietyPriceWindow(AncestorWindow):
             # for col in range(col_count):
             #     print(self.table_widget.item(row_count-1, col).text(), ' ', end='')
             row_count -= 1
-        """生成横坐标,整理用于作折线的原始数据，结果的结构{year:[[date, value], [date, value],...]}"""
-        map_data = OrderedDict()  # 用于作图的数据集
-        axis_x = self.generate_axis_x()
-        for year in data:
-            map_data[year] = []
-            for x in axis_x:
-                for year_item in data[year]:
-                    if x == year_item[0][4:]:
-                        map_data[year].append([x, year_item[1]])
-                    # elif x != year_item[0][4:]:
-                    #     map_data[year].append([x, '-'])
-                #
-                #         map_data[year].append([x, year_item[1]])
-                #     else:
-                #         map_data[year].append([x, '-'])
+        # 数据处理
+        finally_data = self.data_handler(data)
+        print(finally_data)
+        self.tools.tool_click_signal.emit(finally_data)  # 数据传到页面
 
-            # print(map_data[year])
-            # print('==='*10)
-        # print("map_data\n", map_data)
-        """将数据以月份为单位分开，结果的结构 {year:{month:[up_down, shock]}}"""
+    def return_view_all(self):
+        # 加入自定义控件
+        self.confirm_button.setEnabled(True)
+        self.web_view.hide()
+        self.map_widget.show()
+        self.table_widget.show()
+        self.tool_view_all.setEnabled(False)
+
+    @staticmethod
+    def generate_axis_x():
+        """生成横坐标数据, 以闰年计"""
+        start_day = datetime.datetime.strptime("20160101", "%Y%m%d")
+        end_day = datetime.datetime.strptime("20161231", "%Y%m%d")
+        axis_x = []
+        for date in GenerateTime(begin=start_day, end=end_day).generate_time():
+            axis_x.append(date[4:])
+        return axis_x
+
+    def data_handler(self, data):
+        """
+        页面展示图表的数据处理
+        :param data:
+        :return: json Data
+        """
+        axis_x = self.generate_axis_x()  # 生成横坐标,整理用于作折线的原始数据，结果的结构{year:[[date, value], [date, value],...]}
         month_data = OrderedDict()  # 创建一个字典存放数据
+        map_data = OrderedDict()  # 存用于作图的数据
+        # 将数据以月份为单位分开，结果的结构 {year:{month:[up_down, shock]}}
         for year in data:  # 年为单位的数据
             month_data[year] = {}
+            map_data[year] = []
             for year_item in data[year]:  # 每年的各个数据
+                for x in axis_x:
+                    if x == year_item[0][4:]:
+                        map_data[year].append([x, year_item[1]])  # 放入当天的数据用于作图的
                 # 根据时间将数据重新整理
                 month = year_item[0][4:6]
                 if month not in month_data[year].keys():
@@ -352,45 +368,11 @@ class VarietyPriceWindow(AncestorWindow):
                     last_price = None
 
         # 整理数据
-
         finally_data = dict()
         finally_data["raw"] = data
         finally_data["result"] = new_month_data
-        finally_data["xaxis"] = axis_x
         finally_data["mapData"] = map_data
-        finally_data = json.dumps(finally_data)
-        print(finally_data)
-        self.tools.tool_click_signal.emit(finally_data)  # 数据传到页面
-
-        # new_month_data = json.dumps(new_month_data)
-        # print("new_month_data\n", new_month_data)
-        #
-        # # for year in new_month_data:
-        # #     print(year, new_month_data[year])
-        #
-        #
-        #
-        # data = json.dumps(data)
-        # print(data, type(data))
-        # self.tools.tool_click_signal.emit(data)
-
-    def return_view_all(self):
-        # 加入自定义控件
-        self.confirm_button.setEnabled(True)
-        self.web_view.hide()
-        self.map_widget.show()
-        self.table_widget.show()
-        self.tool_view_all.setEnabled(False)
-
-    @staticmethod
-    def generate_axis_x():
-        """生成横坐标数据, 以闰年计"""
-        start_day = datetime.datetime.strptime("20160101", "%Y%m%d")
-        end_day = datetime.datetime.strptime("20161231", "%Y%m%d")
-        axis_x = []
-        for date in GenerateTime(begin=start_day, end=end_day).generate_time():
-            axis_x.append(date[4:])
-        return axis_x
+        return json.dumps(finally_data)
 
 
 class ConfirmQueryThread(AncestorThread):

@@ -10,6 +10,11 @@
         body{
             background-color: rgb(240,240,240);
         }
+        #main{
+            margin: 0 auto;
+            width: 100%;
+            height: 400px;
+        }
         table{
             border-collapse:collapse;
             margin: 0 auto;
@@ -30,7 +35,7 @@
     </style>
 </head>
 <body>
-    <div id="main" style="width:100%;height:400px;"></div>
+    <div id="main"></div>
 
     <table>
         <!--<tr>-->
@@ -143,9 +148,17 @@
                 // 指定图表的全局配置项和数据
                 var option = {
                     title: {
-                        text: "季节图表"
+                        text: "季节图表",
+                        // x: "center",
+                        textStyle:{
+                            fontSize:14
+                        }
                     },
-                    tooltip: {},
+                    tooltip: {
+                        axisPointer:{
+                            type:"cross"
+                        }
+                    },
                     legend: {
                         data:[]
                     },
@@ -157,22 +170,36 @@
                         },
                         dataView: {readOnly: false},
                         magicType: {type: ['line', 'bar']},
-                        restore: {},
-                        // saveAsImage: {}
+                        restore: {}
                         }
                     },
                     xAxis: {
-                        data: []
+                        data: ["0101", "0102", "0103", "0104", "0105", "0106", "0107", "0108", "0109", "0110", "0111", "0112", "0113", "0114", "0115", "0116", "0117", "0118", "0119", "0120", "0121", "0122", "0123", "0124", "0125", "0126", "0127", "0128", "0129", "0130", "0131", "0201", "0202", "0203", "0204", "0205", "0206", "0207", "0208", "0209", "0210", "0211", "0212", "0213", "0214", "0215", "0216", "0217", "0218", "0219", "0220", "0221", "0222", "0223", "0224", "0225", "0226", "0227", "0228", "0229", "0301", "0302", "0303", "0304", "0305", "0306", "0307", "0308", "0309", "0310", "0311", "0312", "0313", "0314", "0315", "0316", "0317", "0318", "0319", "0320", "0321", "0322", "0323", "0324", "0325", "0326", "0327", "0328", "0329", "0330", "0331", "0401", "0402", "0403", "0404", "0405", "0406", "0407", "0408", "0409", "0410", "0411", "0412", "0413", "0414", "0415", "0416", "0417", "0418", "0419", "0420", "0421", "0422", "0423", "0424", "0425", "0426", "0427", "0428", "0429", "0430", "0501", "0502", "0503", "0504", "0505", "0506", "0507", "0508", "0509", "0510", "0511", "0512", "0513", "0514", "0515", "0516", "0517", "0518", "0519", "0520", "0521", "0522", "0523", "0524", "0525", "0526", "0527", "0528", "0529", "0530", "0531", "0601", "0602", "0603", "0604", "0605", "0606", "0607", "0608", "0609", "0610", "0611", "0612", "0613", "0614", "0615", "0616", "0617", "0618", "0619", "0620", "0621", "0622", "0623", "0624", "0625", "0626", "0627", "0628", "0629", "0630", "0701", "0702", "0703", "0704", "0705", "0706", "0707", "0708", "0709", "0710", "0711", "0712", "0713", "0714", "0715", "0716", "0717", "0718", "0719", "0720", "0721", "0722", "0723", "0724", "0725", "0726", "0727", "0728", "0729", "0730", "0731", "0801", "0802", "0803", "0804", "0805", "0806", "0807", "0808", "0809", "0810", "0811", "0812", "0813", "0814", "0815", "0816", "0817", "0818", "0819", "0820", "0821", "0822", "0823", "0824", "0825", "0826", "0827", "0828", "0829", "0830", "0831", "0901", "0902", "0903", "0904", "0905", "0906", "0907", "0908", "0909", "0910", "0911", "0912", "0913", "0914", "0915", "0916", "0917", "0918", "0919", "0920", "0921", "0922", "0923", "0924", "0925", "0926", "0927", "0928", "0929", "0930", "1001", "1002", "1003", "1004", "1005", "1006", "1007", "1008", "1009", "1010", "1011", "1012", "1013", "1014", "1015", "1016", "1017", "1018", "1019", "1020", "1021", "1022", "1023", "1024", "1025", "1026", "1027", "1028", "1029", "1030", "1031", "1101", "1102", "1103", "1104", "1105", "1106", "1107", "1108", "1109", "1110", "1111", "1112", "1113", "1114", "1115", "1116", "1117", "1118", "1119", "1120", "1121", "1122", "1123", "1124", "1125", "1126", "1127", "1128", "1129", "1130", "1201", "1202", "1203", "1204", "1205", "1206", "1207", "1208", "1209", "1210", "1211", "1212", "1213", "1214", "1215", "1216", "1217", "1218", "1219", "1220", "1221", "1222", "1223", "1224", "1225", "1226", "1227", "1228", "1229", "1230", "1231"],
+                        axisTick:{
+                            interval:function (index, value) {
+                                var v = "2016/" + value.substr(0,2) + "/" + value.substr(2,2);
+                                var lastDay = new Date("2016", value.substr(0,2), 0);
+                                var date = new Date(v);
+                                if (date.getDate() == lastDay.getDate()){
+                                    return true
+                                }
+                            },
+                            alignWithLabel:true
+                        },
+                        axisLabel:{
+                        interval:0,
+                        formatter:function (value, index) {
+                            var v = "2016/" + value.substr(0,2) + "/" + value.substr(2,2);
+                            var date = new Date(v);
+                            if (date.getDate() == 15){
+                                return (date.getMonth() + 1) + "月";
+                            }
+                            // return date.getMonth() + 1;
+                            }
+                        },
                     },
                     yAxis: {},
-                    series: [
-                    //     {
-                    //     name: '价格',
-                    //     type: 'line',
-                    //     // data: [2, 34, 68, 59, 59, 23]
-                    //     data: []
-                    // }
-                    ]
+                    series: []
                 };
                 // 使用刚指定的配置项和数据显示图表。
                 myChart.setOption(option);
@@ -202,6 +229,21 @@
                         "<td id="+y+'12up'+"></td><td id="+y+'12shock'+"></td>" +
                         "</tr>"
                 });
+                // 添加均值栏
+                tableContent += "<tr><th>均值</th>" +
+                        "<td id='01avgu'></td><td id='01avgs'></td>" +
+                        "<td id='02avgu'></td><td id='02avgs'></td>" +
+                        "<td id='03avgu'></td><td id='03avgs'></td>" +
+                        "<td id='04avgu'></td><td id='04avgs'></td>" +
+                        "<td id='05avgu'></td><td id='05avgs'></td>" +
+                        "<td id='06avgu'></td><td id='06avgs'></td>" +
+                        "<td id='07avgu'></td><td id='07avgs'></td>" +
+                        "<td id='08avgu'></td><td id='08avgs'></td>" +
+                        "<td id='09avgu'></td><td id='09avgs'></td>" +
+                        "<td id='10avgu'></td><td id='10avgs'></td>" +
+                        "<td id='11avgu'></td><td id='11avgs'></td>" +
+                        "<td id='12avgu'></td><td id='12avgs'></td>" +
+                        "</tr>";
                 $("table").html(tableContent);
                 // 获取处理好的数据，用于展示表格
                 var s = "";
@@ -260,12 +302,125 @@
                     });
                 });
                 // $("p").html(s)
+                var upReg01 = new RegExp(".*01up");
+                // 计算均值
+                var total01u = 0, count01u=0, total01s = 0, count01s=0;
+                var total02u = 0, count02u=0, total02s = 0, count02s=0;
+                var total03u = 0, count03u=0, total03s = 0, count03s=0;
+                var total04u = 0, count04u=0, total04s = 0, count04s=0;
+                var total05u = 0, count05u=0, total05s = 0, count05s=0;
+                var total06u = 0, count06u=0, total06s = 0, count06s=0;
+                var total07u = 0, count07u=0, total07s = 0, count07s=0;
+                var total08u = 0, count08u=0, total08s = 0, count08s=0;
+                var total09u = 0, count09u=0, total09s = 0, count09s=0;
+                var total10u = 0, count10u=0, total10s = 0, count10s=0;
+                var total11u = 0, count11u=0, total11s = 0, count11s=0;
+                var total12u = 0, count12u=0, total12s = 0, count12s=0;
+                $("table tr").each(function () {
+                    var up01 = parseFloat($(this).find("td").eq(0).html());
+                    var shock01 = parseFloat($(this).find("td").eq(1).html());
+                    if (up01){total01u+=up01;count01u+= 1;}
+                    if (shock01){total01s+=shock01;count01s+= 1;}
+
+                    var up02 = parseFloat($(this).find("td").eq(2).html());
+                    var shock02 = parseFloat($(this).find("td").eq(3).html());
+                    if (up02){total02u+=up02;count02u+= 1;}
+                    if (shock02){total02s+=shock02;count02s+= 1;}
+
+                    var up03 = parseFloat($(this).find("td").eq(4).html());
+                    var shock03 = parseFloat($(this).find("td").eq(5).html());
+                    if (up03){total03u+=up03;count03u+= 1;}
+                    if (shock03){total03s+=shock03;count03s+= 1;}
+
+                    var up04 = parseFloat($(this).find("td").eq(6).html());
+                    var shock04 = parseFloat($(this).find("td").eq(7).html());
+                    if (up04){total04u+=up04;count04u+= 1;}
+                    if (shock04){total04s+=shock04;count04s+= 1;}
+                    
+                    var up05 = parseFloat($(this).find("td").eq(8).html());
+                    var shock05 = parseFloat($(this).find("td").eq(9).html());
+                    if (up05){total05u+=up05;count05u+= 1;}
+                    if (shock05){total05s+=shock05;count05s+= 1;}
+                    
+                    var up06 = parseFloat($(this).find("td").eq(10).html());
+                    var shock06 = parseFloat($(this).find("td").eq(11).html());
+                    if (up06){total06u+=up06;count06u+= 1;}
+                    if (shock06){total06s+=shock06;count06s+= 1;}
+                    
+                    var up07 = parseFloat($(this).find("td").eq(12).html());
+                    var shock07 = parseFloat($(this).find("td").eq(13).html());
+                    if (up07){total07u+=up07;count07u+= 1;}
+                    if (shock07){total07s+=shock07;count07s+= 1;}
+                    
+                    var up08 = parseFloat($(this).find("td").eq(14).html());
+                    var shock08 = parseFloat($(this).find("td").eq(15).html());
+                    if (up08){total08u+=up08;count08u+= 1;}
+                    if (shock08){total08s+=shock08;count08s+= 1;}
+                    
+                    var up09 = parseFloat($(this).find("td").eq(16).html());
+                    var shock09 = parseFloat($(this).find("td").eq(17).html());
+                    if (up09){total09u+=up09;count09u+= 1;}
+                    if (shock09){total09s+=shock09;count09s+= 1;}
+                    
+                    var up10 = parseFloat($(this).find("td").eq(18).html());
+                    var shock10 = parseFloat($(this).find("td").eq(19).html());
+                    if (up10){total10u+=up10;count10u+= 1;}
+                    if (shock10){total10s+=shock10;count10s+= 1;}
+                    
+                    var up11 = parseFloat($(this).find("td").eq(20).html());
+                    var shock11 = parseFloat($(this).find("td").eq(21).html());
+                    if (up11){total11u+=up11;count11u+= 1;}
+                    if (shock11){total11s+=shock11;count11s+= 1;}
+                    
+                    var up12 = parseFloat($(this).find("td").eq(22).html());
+                    var shock12 = parseFloat($(this).find("td").eq(23).html());
+                    if (up12){total12u+=up12;count12u+= 1;}
+                    if (shock12){total12s+=shock12;count12s+= 1;}
+
+                });
+                $("#01avgu").html(Number(total01u/count01u).toFixed(2) + "%");
+                $("#01avgs").html(Number(total01s/count01s).toFixed(2) + "%");
+
+                $("#02avgu").html(Number(total02u/count02u).toFixed(2) + "%");
+                $("#02avgs").html(Number(total02s/count02s).toFixed(2) + "%");
+
+                $("#03avgu").html(Number(total03u/count03u).toFixed(2) + "%");
+                $("#03avgs").html(Number(total03s/count03s).toFixed(2) + "%");
+                
+                $("#04avgu").html(Number(total04u/count04u).toFixed(2) + "%");
+                $("#04avgs").html(Number(total04s/count04s).toFixed(2) + "%");
+                
+                $("#05avgu").html(Number(total05u/count05u).toFixed(2) + "%");
+                $("#05avgs").html(Number(total05s/count05s).toFixed(2) + "%");
+                
+                $("#06avgu").html(Number(total06u/count06u).toFixed(2) + "%");
+                $("#06avgs").html(Number(total06s/count06s).toFixed(2) + "%");
+                
+                $("#07avgu").html(Number(total07u/count07u).toFixed(2) + "%");
+                $("#07avgs").html(Number(total07s/count07s).toFixed(2) + "%");
+                
+                $("#08avgu").html(Number(total08u/count08u).toFixed(2) + "%");
+                $("#08avgs").html(Number(total08s/count08s).toFixed(2) + "%");
+                
+                $("#09avgu").html(Number(total09u/count09u).toFixed(2) + "%");
+                $("#09avgs").html(Number(total09s/count09s).toFixed(2) + "%");
+                
+                $("#10avgu").html(Number(total10u/count10u).toFixed(2) + "%");
+                $("#10avgs").html(Number(total10s/count10s).toFixed(2) + "%");
+                
+                $("#11avgu").html(Number(total11u/count11u).toFixed(2) + "%");
+                $("#11avgs").html(Number(total11s/count11s).toFixed(2) + "%");
+                
+                $("#12avgu").html(Number(total12u/count12u).toFixed(2) + "%");
+                $("#12avgs").html(Number(total12s/count12s).toFixed(2) + "%");
+                
                 // 处理表格颜色
                 var upReg = new RegExp(".*up$");
+                var avgUpReg = new RegExp(".*avgu$")
                 var shockReg = new RegExp(".*shock");
                 $("table td").each(function () {
                     var tdId = $(this).attr("id");
-                    if (upReg.test(tdId)){
+                    if (upReg.test(tdId) || avgUpReg.test(tdId)){
                         var num = parseFloat($(this).html());
                         if(num && num < 0){
                             $(this).css("background-color","#921F28")
@@ -287,19 +442,11 @@
                 })
 
                 // json数据解析呈现画图
-                var axisX = data.xaxis;  // x 坐标
-                option.xAxis = {data: axisX};
                 option.yAxis = {
-                    // min:"dataMin",
-                    // max:"dataMax",
-                    // minInterval: 1,
                     scale:true
                 };
                 option.legend = {
-                    data:[],
-                    orient: 'vertical',
-                    y: 'center',
-                    x: 'right' //居右显示
+                    data:[]
                 };
                 $.each(data.mapData, function (year, yearData) {
                     option.legend.data.push(year);
@@ -307,7 +454,7 @@
                         tooltip:{
                             show: true
                         },
-                        symbol: "none",
+                        symbol:"none",
                         name: year,
                         type: "line",
                         data: yearData
@@ -319,6 +466,7 @@
             })
         })
     };
+    // 获取所有数据年份
     function getYears(data) {
         var years = [];
         $.each(data, function (k, v) {
