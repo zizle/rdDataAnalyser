@@ -20,6 +20,8 @@ from widgets import ToolWidget
 
 
 class VarietyPriceWindow(AncestorWindow):
+    name = "variety_price"
+
     def __init__(self, *args, **kwargs):
         super(VarietyPriceWindow, self).__init__(*args, **kwargs)
         """绑定公用属性"""
@@ -367,11 +369,18 @@ class VarietyPriceWindow(AncestorWindow):
                 else:
                     last_price = None
 
+        # title的处理
+        title = ""
+        if self.name == "variety_price":
+            title = self.exchange_lib.currentText() + self.variety_lib.currentText() + "品种权重指数"
+        if self.name == "main_contract":
+            title = self.exchange_lib.currentText() + self.variety_lib.currentText() + "主力合约指数"
         # 整理数据
         finally_data = dict()
         finally_data["raw"] = data
         finally_data["result"] = new_month_data
         finally_data["mapData"] = map_data
+        finally_data["title"] = title
         return json.dumps(finally_data)
 
 
