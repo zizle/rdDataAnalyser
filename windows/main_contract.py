@@ -15,6 +15,8 @@ from windows.variety_price import VarietyPriceWindow
 
 
 class MainContractWindow(VarietyPriceWindow):
+    name = "main_contract"
+
     def confirm(self):
         """确认按钮点击"""
         # 开启定时器

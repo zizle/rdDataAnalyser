@@ -12,10 +12,11 @@
         }
         #main{
             margin: 0 auto;
-            width: 100%;
+            width: 1150px;
             height: 400px;
         }
         table{
+            width: 988px;
             border-collapse:collapse;
             margin: 0 auto;
             cursor: default;
@@ -36,7 +37,6 @@
 </head>
 <body>
     <div id="main"></div>
-
     <table>
         <!--<tr>-->
             <!--<th>年份</th>-->
@@ -148,19 +148,23 @@
                 // 指定图表的全局配置项和数据
                 var option = {
                     title: {
-                        text: "季节图表",
+                        text: "",
                         // x: "center",
                         textStyle:{
                             fontSize:14
-                        }
+                        },
+                        left:"center"
                     },
                     tooltip: {
-                        axisPointer:{
-                            type:"cross"
-                        }
+                        trigger: 'axis'
                     },
                     legend: {
-                        data:[]
+                        data:[],
+                        type:"scroll",
+                        orient:"vertical",
+                        right:10,
+                        top:35,
+                        bottom:20
                     },
                     toolbox: {
                         show: true,
@@ -445,16 +449,15 @@
                 option.yAxis = {
                     scale:true
                 };
-                option.legend = {
-                    data:[]
-                };
+                option.title.text = data.title;
                 $.each(data.mapData, function (year, yearData) {
                     option.legend.data.push(year);
                     option.series.push({
                         tooltip:{
                             show: true
                         },
-                        symbol:"none",
+                        symbol:"circle",
+                        symbolSize:1,
                         name: year,
                         type: "line",
                         data: yearData

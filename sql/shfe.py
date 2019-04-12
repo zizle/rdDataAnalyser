@@ -4,7 +4,6 @@
 
 from sql.ancestor import DataBaseWorker
 from items import SHFEMsgItem, SHFERkgItem, SHFETargetItem, SHFEMetalItem, SHFETotalItem, SHFEPrice
-from utils.decoration import cost_time
 
 
 class SHFEWorker(DataBaseWorker):
@@ -303,7 +302,8 @@ class SHFEWorker(DataBaseWorker):
         item = self.worker.query(SHFEPrice).filter(SHFEPrice.name == variety, SHFEPrice.date == date).first()
         if not item:
             return ()
-        return date, item.contract_price, item.volume, item.holdings
+        price = round(item.contract_price)
+        return date, price, item.volume, item.holdings
 
     def variety_price_table_start(self):
         # 获取数据库中最新一条的时间，如果没有则获取原数据表的开始时间，获取当前日期，循环获取这个时间段每天的所有品种
