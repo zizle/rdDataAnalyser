@@ -3,19 +3,45 @@
 # author: zizle
 import datetime
 import re
-from PyQt5.QtWidgets import (
-    QApplication, QVBoxLayout, QHBoxLayout, QLabel, QComboBox, QSplitter, QDateEdit, QPushButton, QMessageBox
-)
-from PyQt5.QtCore import Qt, QDate, pyqtSignal
+from PyQt5.QtWidgets import QMessageBox, QFileDialog
+from PyQt5.QtCore import pyqtSignal
 
-from draw.main_contract import MapWidget, TableWidget
 from utils.generate_time import GenerateTime
 from windows.ancestor import AncestorThread
 from windows.variety_price import VarietyPriceWindow
+from utils.saver import get_desktop_path, open_excel
 
 
 class MainContractWindow(VarietyPriceWindow):
     name = "main_contract"
+
+    def download_requested(self, download_item):
+        """支持页面下载文件"""
+        if not download_item.isFinished() and download_item.state() == 0:
+            self.loading(download_item, title="主力合约指数季节表")
+
+    def loading(self, download_item, title):
+        # 保存位置选择,默认桌面
+        desktop_path = get_desktop_path()
+        save_path = QFileDialog.getExistingDirectory(self, "选择保存的位置", desktop_path)
+        cur_time = datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d")
+        excel_name = self.exchange_lib.currentText() + self.variety_lib.currentText() + title + cur_time
+        file_path = save_path + "/" + excel_name + ".xls"
+        print(file_path)
+        download_item.setPath(file_path)
+        download_item.accept()
+        self.season_table_file = file_path
+        download_item.finished.connect(self.download_finished)
+
+    def download_finished(self):
+        try:
+            if self.season_table_file:
+                open_dialog = QMessageBox.question(self, "成功", "导出保存成功！\n是否现在打开？", QMessageBox.Yes | QMessageBox.No)
+                if open_dialog == QMessageBox.Yes:
+                    open_excel(self.season_table_file)  # 调用Microsoft Excel 打开文件
+                self.season_table_file = None
+        except Exception as e:
+            print(e)
 
     def confirm(self):
         """确认按钮点击"""
@@ -34,7 +60,7 @@ class MainContractWindow(VarietyPriceWindow):
         variety_en = self.get_variety_en(variety)
         begin_time = re.sub('-', '', str(self.begin_time.date().toPyDate()))
         end_time = re.sub('-', '', str(self.end_time.date().toPyDate()))
-        print("确认提交:\n当前交易所：{}\n当前品种：{},英文{}\n起始时间：{}\n终止时间：{}\n".format(lib, variety,variety_en, begin_time, end_time))
+        print("确认提交:\n当前交易所：{}\n当前品种：{},英文{}\n起始时间：{}\n终止时间：{}\n".format(lib, variety, variety_en, begin_time, end_time))
         # 转成可计算的datetime.datetime时间对象
         begin_time_datetime_cls = datetime.datetime.strptime(begin_time, "%Y%m%d")
         end_time_datetime_cls = datetime.datetime.strptime(end_time, "%Y%m%d")
@@ -84,5 +110,3 @@ class ConfirmQueryThread(AncestorThread):
             self.process_signal.emit(["处理进度:", index + 1, self.time_length])
         self.result_signal.emit({"data": data, "message": self.lib + self.variety + "主力合约价格指数"})
         self.db_worker.close()
-
-

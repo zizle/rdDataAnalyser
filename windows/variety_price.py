@@ -6,7 +6,7 @@ import datetime
 import re
 from collections import OrderedDict
 from PyQt5.QtWidgets import (
-    QVBoxLayout, QHBoxLayout, QLabel, QComboBox, QSplitter, QDateEdit, QPushButton, QMessageBox
+    QVBoxLayout, QHBoxLayout, QLabel, QComboBox, QSplitter, QDateEdit, QPushButton, QMessageBox, QFileDialog
 )
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWebChannel import QWebChannel
@@ -17,10 +17,12 @@ from draw.variety_price import MapWidget, TableWidget
 from settings import RESEARCH_LIB, GOODS_LIB, SHFE_PRODUCT_NAMES, CFFEX_PRODUCT_NAMES, DCE_PRODUCT_NAMES, CZCE_PRODUCT_NAMES
 from utils.generate_time import GenerateTime
 from widgets import ToolWidget
+from utils.saver import get_desktop_path, open_excel
 
 
 class VarietyPriceWindow(AncestorWindow):
     name = "variety_price"
+    export_table_signal = pyqtSignal()
 
     def __init__(self, *args, **kwargs):
         super(VarietyPriceWindow, self).__init__(*args, **kwargs)
@@ -95,13 +97,15 @@ class VarietyPriceWindow(AncestorWindow):
         # 加入控件
         self.web_view = QWebEngineView()
         self.web_view.load(QUrl("file:///static/html/variety_price.html"))
+        self.web_view.page().profile().downloadRequested.connect(self.download_requested)  # 页面下载请求(导出excel)
         self.show_splitter.addWidget(self.web_view)
         self.web_view.hide()  # 隐藏，刚开始不可见
         """js交互通道"""
         web_channel = QWebChannel(self.web_view.page())
         self.web_view.page().setWebChannel(web_channel)  # 网页设置信息通道
-        web_channel.registerObject("season_table", self.tools)
-
+        web_channel.registerObject("season_table", self.tools)  # 注册信号对象
+        web_channel.registerObject("export_table", self)  # 导出表格数据信号对象
+        self.season_table_file = None  # 季节表的保存路径
         self.setLayout(self.vertical_layout)
 
     def fill_init_data(self):
@@ -269,8 +273,11 @@ class VarietyPriceWindow(AncestorWindow):
 
     def season_table(self):
         """处理展示季节图表"""
+        # 菜单可用状态改变
+        main_window = self.parent().parent()
+        main_window.export_table.setEnabled(True)
         # 获取表格的行数和列数 col-列，row-行
-        col_count = self.table_widget.columnCount()
+        # col_count = self.table_widget.columnCount()
         row_count = self.table_widget.rowCount()
         # if not row_count:
         #     return
@@ -307,6 +314,9 @@ class VarietyPriceWindow(AncestorWindow):
         self.map_widget.show()
         self.table_widget.show()
         self.tool_view_all.setEnabled(False)
+        # 菜单可用状态改变
+        main_window = self.parent().parent()
+        main_window.export_table.setEnabled(False)
 
     @staticmethod
     def generate_axis_x():
@@ -382,6 +392,35 @@ class VarietyPriceWindow(AncestorWindow):
         finally_data["mapData"] = map_data
         finally_data["title"] = title
         return json.dumps(finally_data)
+
+    def download_requested(self, download_item):
+        """支持页面下载文件"""
+        if not download_item.isFinished() and download_item.state() == 0:
+            self.loading(download_item, title="品种权重指数季节表")
+
+    def loading(self, download_item, title):
+        # 保存位置选择,默认桌面
+        desktop_path = get_desktop_path()
+        save_path = QFileDialog.getExistingDirectory(self, "选择保存的位置", desktop_path)
+        cur_time = datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d")
+        excel_name = self.exchange_lib.currentText() + self.variety_lib.currentText() + title + cur_time
+        file_path = save_path + "/" + excel_name + ".xls"
+        print(file_path)
+        download_item.setPath(file_path)
+        download_item.accept()
+        self.season_table_file = file_path
+        print(self.season_table_file)
+        download_item.finished.connect(self.download_finished)
+
+    def download_finished(self):
+        try:
+            if self.season_table_file:
+                open_dialog = QMessageBox.question(self, "成功", "导出保存成功！\n是否现在打开？", QMessageBox.Yes | QMessageBox.No)
+                if open_dialog == QMessageBox.Yes:
+                    open_excel(self.season_table_file)  # 调用Microsoft Excel 打开文件
+                self.season_table_file = None
+        except Exception as e:
+            print(e)
 
 
 class ConfirmQueryThread(AncestorThread):

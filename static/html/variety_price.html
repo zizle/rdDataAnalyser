@@ -6,6 +6,7 @@
     <script type="text/javascript" src="../js/echarts.min.js"></script>
     <script type="text/javascript" src="../js/qwebchannel.js"></script>
     <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../js/table2excel.min.js"></script>
     <style>
         body{
             background-color: rgb(240,240,240);
@@ -37,7 +38,8 @@
 </head>
 <body>
     <div id="main"></div>
-    <table>
+    <!--<div id="export"><a data-type="xls" href="javascript:;">导出excel</a></div>-->
+    <table id="seasonTable">
         <!--<tr>-->
             <!--<th>年份</th>-->
             <!--<th colspan="2">1月</th>-->
@@ -138,9 +140,21 @@
     </table>
     <p></p>
 </body>
+
 <script type="text/javascript">
     window.onload = function () {
         new QWebChannel(qt.webChannelTransport, function (channel) {
+            // 导出表格信号
+            var export_table = channel.objects.export_table;
+            export_table.export_table_signal.connect(function () {
+                // "收到导出表格的信号"
+                $("#seasonTable").table2excel({
+                    exclude: ".excludeThisClass",
+                    name: "Sheet1",
+                    filename: "seasonTable" //do not include extension
+                });
+            });
+
             var season_table = channel.objects.season_table;
             season_table.tool_click_signal.connect(function (strData) {
                 // 基于准备好的dom，初始化echarts实例
@@ -172,8 +186,8 @@
                         dataZoom: {
                             yAxisIndex: 'none'
                         },
-                        dataView: {readOnly: false},
                         magicType: {type: ['line', 'bar']},
+                        saveAsImage: {show: true},
                         restore: {}
                         }
                     },
@@ -538,7 +552,7 @@
                 var finalSet08u = arrayHandler(set08u);
                 var finalSet08s = arrayHandler(set08s);
                 $("#08cuu").html(finalSet08u[0]);
-                $("#08csu").html(finalSet08s[0]);
+                $("#08csu").html("-");
                 $("#08cud").html(finalSet08u[1]);
                 $("#08csd").html("-");
                 $("#08avgu").html(finalSet08u[2]);
@@ -551,7 +565,7 @@
                 var finalSet09u = arrayHandler(set09u);
                 var finalSet09s = arrayHandler(set09s);
                 $("#09cuu").html(finalSet09u[0]);
-                $("#09csu").html(finalSet09s[0]);
+                $("#09csu").html("-");
                 $("#09cud").html(finalSet09u[1]);
                 $("#09csd").html("-");
                 $("#09avgu").html(finalSet09u[2]);
