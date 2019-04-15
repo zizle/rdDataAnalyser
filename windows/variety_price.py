@@ -281,8 +281,8 @@ class VarietyPriceWindow(AncestorWindow):
         self.web_view.show()
         self.tool_view_all.setEnabled(True)
         # 获取数据，处理数据，将结果数据传入页面展示
-        print("列数", col_count)
-        print("行数", row_count)
+        # print("列数", col_count)
+        # print("行数", row_count)
         # 遍历获取数据
         data = OrderedDict()
         for row in range(row_count):
@@ -297,7 +297,7 @@ class VarietyPriceWindow(AncestorWindow):
             row_count -= 1
         # 数据处理
         finally_data = self.data_handler(data)
-        print(finally_data)
+        # print(finally_data)
         self.tools.tool_click_signal.emit(finally_data)  # 数据传到页面
 
     def return_view_all(self):

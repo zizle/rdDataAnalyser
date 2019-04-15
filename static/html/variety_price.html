@@ -233,6 +233,63 @@
                         "<td id="+y+'12up'+"></td><td id="+y+'12shock'+"></td>" +
                         "</tr>"
                 });
+                // 添加涨个数，跌个数，最大值，最小值栏目
+                tableContent += "<tr><th>计涨</th>" +
+                        "<td id='01cuu'></td><td id='01csu'></td>" +
+                        "<td id='02cuu'></td><td id='02csu'></td>" +
+                        "<td id='03cuu'></td><td id='03csu'></td>" +
+                        "<td id='04cuu'></td><td id='04csu'></td>" +
+                        "<td id='05cuu'></td><td id='05csu'></td>" +
+                        "<td id='06cuu'></td><td id='06csu'></td>" +
+                        "<td id='07cuu'></td><td id='07csu'></td>" +
+                        "<td id='08cuu'></td><td id='08csu'></td>" +
+                        "<td id='09cuu'></td><td id='09csu'></td>" +
+                        "<td id='10cuu'></td><td id='10csu'></td>" +
+                        "<td id='11cuu'></td><td id='11csu'></td>" +
+                        "<td id='12cuu'></td><td id='12csu'></td>" +
+                        "</tr>";
+                tableContent += "<tr><th>计跌</th>" +
+                        "<td id='01cud'></td><td id='01csd'></td>" +
+                        "<td id='02cud'></td><td id='02csd'></td>" +
+                        "<td id='03cud'></td><td id='03csd'></td>" +
+                        "<td id='04cud'></td><td id='04csd'></td>" +
+                        "<td id='05cud'></td><td id='05csd'></td>" +
+                        "<td id='06cud'></td><td id='06csd'></td>" +
+                        "<td id='07cud'></td><td id='07csd'></td>" +
+                        "<td id='08cud'></td><td id='08csd'></td>" +
+                        "<td id='09cud'></td><td id='09csd'></td>" +
+                        "<td id='10cud'></td><td id='10csd'></td>" +
+                        "<td id='11cud'></td><td id='11csd'></td>" +
+                        "<td id='12cud'></td><td id='12csd'></td>" +
+                        "</tr>";
+                tableContent += "<tr><th>最大</th>" +
+                        "<td id='01umax'></td><td id='01smax'></td>" +
+                        "<td id='02umax'></td><td id='02smax'></td>" +
+                        "<td id='03umax'></td><td id='03smax'></td>" +
+                        "<td id='04umax'></td><td id='04smax'></td>" +
+                        "<td id='05umax'></td><td id='05smax'></td>" +
+                        "<td id='06umax'></td><td id='06smax'></td>" +
+                        "<td id='07umax'></td><td id='07smax'></td>" +
+                        "<td id='08umax'></td><td id='08smax'></td>" +
+                        "<td id='09umax'></td><td id='09smax'></td>" +
+                        "<td id='10umax'></td><td id='10smax'></td>" +
+                        "<td id='11umax'></td><td id='11smax'></td>" +
+                        "<td id='12umax'></td><td id='12smax'></td>" +
+                        "</tr>";
+                tableContent += "<tr><th>最小</th>" +
+                        "<td id='01umin'></td><td id='01smin'></td>" +
+                        "<td id='02umin'></td><td id='02smin'></td>" +
+                        "<td id='03umin'></td><td id='03smin'></td>" +
+                        "<td id='04umin'></td><td id='04smin'></td>" +
+                        "<td id='05umin'></td><td id='05smin'></td>" +
+                        "<td id='06umin'></td><td id='06smin'></td>" +
+                        "<td id='07umin'></td><td id='07smin'></td>" +
+                        "<td id='08umin'></td><td id='08smin'></td>" +
+                        "<td id='09umin'></td><td id='09smin'></td>" +
+                        "<td id='10umin'></td><td id='10smin'></td>" +
+                        "<td id='11umin'></td><td id='11smin'></td>" +
+                        "<td id='12umin'></td><td id='12smin'></td>" +
+                        "</tr>";
                 // 添加均值栏
                 tableContent += "<tr><th>均值</th>" +
                         "<td id='01avgu'></td><td id='01avgs'></td>" +
@@ -308,129 +365,250 @@
                 // $("p").html(s)
                 var upReg01 = new RegExp(".*01up");
                 // 计算均值
-                var total01u = 0, count01u=0, total01s = 0, count01s=0;
-                var total02u = 0, count02u=0, total02s = 0, count02s=0;
-                var total03u = 0, count03u=0, total03s = 0, count03s=0;
-                var total04u = 0, count04u=0, total04s = 0, count04s=0;
-                var total05u = 0, count05u=0, total05s = 0, count05s=0;
-                var total06u = 0, count06u=0, total06s = 0, count06s=0;
-                var total07u = 0, count07u=0, total07s = 0, count07s=0;
-                var total08u = 0, count08u=0, total08s = 0, count08s=0;
-                var total09u = 0, count09u=0, total09s = 0, count09s=0;
-                var total10u = 0, count10u=0, total10s = 0, count10s=0;
-                var total11u = 0, count11u=0, total11s = 0, count11s=0;
-                var total12u = 0, count12u=0, total12s = 0, count12s=0;
+                var set01u = [], set01s = [];
+                var set02u = [], set02s = [];
+                var set03u = [], set03s = [];
+                var set04u = [], set04s = [];
+                var set05u = [], set05s = [];
+                var set06u = [], set06s = [];
+                var set07u = [], set07s = [];
+                var set08u = [], set08s = [];
+                var set09u = [], set09s = [];
+                var set10u = [], set10s = [];
+                var set11u = [], set11s = [];
+                var set12u = [], set12s = [];
+
                 $("table tr").each(function () {
                     var up01 = parseFloat($(this).find("td").eq(0).html());
                     var shock01 = parseFloat($(this).find("td").eq(1).html());
-                    if (up01){total01u+=up01;count01u+= 1;}
-                    if (shock01){total01s+=shock01;count01s+= 1;}
+                    if (up01){set01u.push(up01)}
+                    if (shock01){set01s.push(shock01)}
 
                     var up02 = parseFloat($(this).find("td").eq(2).html());
                     var shock02 = parseFloat($(this).find("td").eq(3).html());
-                    if (up02){total02u+=up02;count02u+= 1;}
-                    if (shock02){total02s+=shock02;count02s+= 1;}
+                    if (up02){set02u.push(up02)}
+                    if (shock02){set02s.push(shock02)}
 
                     var up03 = parseFloat($(this).find("td").eq(4).html());
                     var shock03 = parseFloat($(this).find("td").eq(5).html());
-                    if (up03){total03u+=up03;count03u+= 1;}
-                    if (shock03){total03s+=shock03;count03s+= 1;}
+                    if (up03){set03u.push(up03)}
+                    if (shock03){set03s.push(shock03)}
 
                     var up04 = parseFloat($(this).find("td").eq(6).html());
                     var shock04 = parseFloat($(this).find("td").eq(7).html());
-                    if (up04){total04u+=up04;count04u+= 1;}
-                    if (shock04){total04s+=shock04;count04s+= 1;}
+                    if (up04){set04u.push(up04)}
+                    if (shock04){set04s.push(shock04)}
                     
                     var up05 = parseFloat($(this).find("td").eq(8).html());
                     var shock05 = parseFloat($(this).find("td").eq(9).html());
-                    if (up05){total05u+=up05;count05u+= 1;}
-                    if (shock05){total05s+=shock05;count05s+= 1;}
+                    if (up05){set05u.push(up05)}
+                    if (shock05){set05s.push(shock05)}
                     
                     var up06 = parseFloat($(this).find("td").eq(10).html());
                     var shock06 = parseFloat($(this).find("td").eq(11).html());
-                    if (up06){total06u+=up06;count06u+= 1;}
-                    if (shock06){total06s+=shock06;count06s+= 1;}
+                    if (up06){set06u.push(up06)}
+                    if (shock06){set06s.push(shock06)}
                     
                     var up07 = parseFloat($(this).find("td").eq(12).html());
                     var shock07 = parseFloat($(this).find("td").eq(13).html());
-                    if (up07){total07u+=up07;count07u+= 1;}
-                    if (shock07){total07s+=shock07;count07s+= 1;}
+                    if (up07){set07u.push(up07)}
+                    if (shock07){set07s.push(shock07)}
                     
                     var up08 = parseFloat($(this).find("td").eq(14).html());
                     var shock08 = parseFloat($(this).find("td").eq(15).html());
-                    if (up08){total08u+=up08;count08u+= 1;}
-                    if (shock08){total08s+=shock08;count08s+= 1;}
+                    if (up08){set08u.push(up08)}
+                    if (shock08){set08s.push(shock08)}
                     
                     var up09 = parseFloat($(this).find("td").eq(16).html());
                     var shock09 = parseFloat($(this).find("td").eq(17).html());
-                    if (up09){total09u+=up09;count09u+= 1;}
-                    if (shock09){total09s+=shock09;count09s+= 1;}
+                    if (up09){set09u.push(up09)}
+                    if (shock09){set09s.push(shock09)}
                     
                     var up10 = parseFloat($(this).find("td").eq(18).html());
                     var shock10 = parseFloat($(this).find("td").eq(19).html());
-                    if (up10){total10u+=up10;count10u+= 1;}
-                    if (shock10){total10s+=shock10;count10s+= 1;}
+                    if (up10){set10u.push(up10)}
+                    if (shock10){set10s.push(shock10)}
                     
                     var up11 = parseFloat($(this).find("td").eq(20).html());
                     var shock11 = parseFloat($(this).find("td").eq(21).html());
-                    if (up11){total11u+=up11;count11u+= 1;}
-                    if (shock11){total11s+=shock11;count11s+= 1;}
+                    if (up11){set11u.push(up11)}
+                    if (shock11){set11s.push(shock11)}
                     
                     var up12 = parseFloat($(this).find("td").eq(22).html());
                     var shock12 = parseFloat($(this).find("td").eq(23).html());
-                    if (up12){total12u+=up12;count12u+= 1;}
-                    if (shock12){total12s+=shock12;count12s+= 1;}
+                    if (up12){set12u.push(up12)}
+                    if (shock12){set12s.push(shock12)}
 
                 });
-                $("#01avgu").html(Number(total01u/count01u).toFixed(2) + "%");
-                $("#01avgs").html(Number(total01s/count01s).toFixed(2) + "%");
+                $("#01umax").html(Math.max.apply(Math,set01u) + "%");
+                $("#01smax").html(Math.max.apply(Math,set01s) + "%");
+                $("#01umin").html(Math.min.apply(Math,set01u) + "%");
+                $("#01smin").html(Math.min.apply(Math,set01s) + "%");
+                var finalSet01u = arrayHandler(set01u);
+                var finalSet01s = arrayHandler(set01s);
+                $("#01cuu").html(finalSet01u[0]);
+                $("#01csu").html("-");
+                $("#01cud").html(finalSet01u[1]);
+                $("#01csd").html("-");
+                $("#01avgu").html(finalSet01u[2]);
+                $("#01avgs").html(finalSet01s[2]);
 
-                $("#02avgu").html(Number(total02u/count02u).toFixed(2) + "%");
-                $("#02avgs").html(Number(total02s/count02s).toFixed(2) + "%");
+                $("#02umax").html(Math.max.apply(Math,set02u) + "%");
+                $("#02smax").html(Math.max.apply(Math,set02s) + "%");
+                $("#02umin").html(Math.min.apply(Math,set02u) + "%");
+                $("#02smin").html(Math.min.apply(Math,set02s) + "%");
+                var finalSet02u = arrayHandler(set02u);
+                var finalSet02s = arrayHandler(set02s);
+                $("#02cuu").html(finalSet02u[0]);
+                $("#02csu").html("-");
+                $("#02cud").html(finalSet02u[1]);
+                $("#02csd").html("-");
+                $("#02avgu").html(finalSet02u[2]);
+                $("#02avgs").html(finalSet02s[2]);
+                
+                $("#03umax").html(Math.max.apply(Math,set03u) + "%");
+                $("#03smax").html(Math.max.apply(Math,set03s) + "%");
+                $("#03umin").html(Math.min.apply(Math,set03u) + "%");
+                $("#03smin").html(Math.min.apply(Math,set03s) + "%");
+                var finalSet03u = arrayHandler(set03u);
+                var finalSet03s = arrayHandler(set03s);
+                $("#03cuu").html(finalSet03u[0]);
+                $("#03csu").html("-");
+                $("#03cud").html(finalSet03u[1]);
+                $("#03csd").html("-");
+                $("#03avgu").html(finalSet03u[2]);
+                $("#03avgs").html(finalSet03s[2]);
+                
+                $("#04umax").html(Math.max.apply(Math,set04u) + "%");
+                $("#04smax").html(Math.max.apply(Math,set04s) + "%");
+                $("#04umin").html(Math.min.apply(Math,set04u) + "%");
+                $("#04smin").html(Math.min.apply(Math,set04s) + "%");
+                var finalSet04u = arrayHandler(set04u);
+                var finalSet04s = arrayHandler(set04s);
+                $("#04cuu").html(finalSet04u[0]);
+                $("#04csu").html("-");
+                $("#04cud").html(finalSet04u[1]);
+                $("#04csd").html("-");
+                $("#04avgu").html(finalSet04u[2]);
+                $("#04avgs").html(finalSet04s[2]);
+                
+                $("#05umax").html(Math.max.apply(Math,set05u) + "%");
+                $("#05smax").html(Math.max.apply(Math,set05s) + "%");
+                $("#05umin").html(Math.min.apply(Math,set05u) + "%");
+                $("#05smin").html(Math.min.apply(Math,set05s) + "%");
+                var finalSet05u = arrayHandler(set05u);
+                var finalSet05s = arrayHandler(set05s);
+                $("#05cuu").html(finalSet05u[0]);
+                $("#05csu").html("-");
+                $("#05cud").html(finalSet05u[1]);
+                $("#05csd").html("-");
+                $("#05avgu").html(finalSet05u[2]);
+                $("#05avgs").html(finalSet05s[2]);
+                
+                $("#06umax").html(Math.max.apply(Math,set06u) + "%");
+                $("#06smax").html(Math.max.apply(Math,set06s) + "%");
+                $("#06umin").html(Math.min.apply(Math,set06u) + "%");
+                $("#06smin").html(Math.min.apply(Math,set06s) + "%");
+                var finalSet06u = arrayHandler(set06u);
+                var finalSet06s = arrayHandler(set06s);
+                $("#06cuu").html(finalSet06u[0]);
+                $("#06csu").html("-");
+                $("#06cud").html(finalSet06u[1]);
+                $("#06csd").html("-");
+                $("#06avgu").html(finalSet06u[2]);
+                $("#06avgs").html(finalSet06s[2]);
+                
+                $("#07umax").html(Math.max.apply(Math,set07u) + "%");
+                $("#07smax").html(Math.max.apply(Math,set07s) + "%");
+                $("#07umin").html(Math.min.apply(Math,set07u) + "%");
+                $("#07smin").html(Math.min.apply(Math,set07s) + "%");
+                var finalSet07u = arrayHandler(set07u);
+                var finalSet07s = arrayHandler(set07s);
+                $("#07cuu").html(finalSet07u[0]);
+                $("#07csu").html("-");
+                $("#07cud").html(finalSet07u[1]);
+                $("#07csd").html("-");
+                $("#07avgu").html(finalSet07u[2]);
+                $("#07avgs").html(finalSet07s[2]);
+                
+                $("#08umax").html(Math.max.apply(Math,set08u) + "%");
+                $("#08smax").html(Math.max.apply(Math,set08s) + "%");
+                $("#08umin").html(Math.min.apply(Math,set08u) + "%");
+                $("#08smin").html(Math.min.apply(Math,set08s) + "%");
+                var finalSet08u = arrayHandler(set08u);
+                var finalSet08s = arrayHandler(set08s);
+                $("#08cuu").html(finalSet08u[0]);
+                $("#08csu").html(finalSet08s[0]);
+                $("#08cud").html(finalSet08u[1]);
+                $("#08csd").html("-");
+                $("#08avgu").html(finalSet08u[2]);
+                $("#08avgs").html(finalSet08s[2]);
+                
+                $("#09umax").html(Math.max.apply(Math,set09u) + "%");
+                $("#09smax").html(Math.max.apply(Math,set09s) + "%");
+                $("#09umin").html(Math.min.apply(Math,set09u) + "%");
+                $("#09smin").html(Math.min.apply(Math,set09s) + "%");
+                var finalSet09u = arrayHandler(set09u);
+                var finalSet09s = arrayHandler(set09s);
+                $("#09cuu").html(finalSet09u[0]);
+                $("#09csu").html(finalSet09s[0]);
+                $("#09cud").html(finalSet09u[1]);
+                $("#09csd").html("-");
+                $("#09avgu").html(finalSet09u[2]);
+                $("#09avgs").html(finalSet09s[2]);
+                
+                $("#10umax").html(Math.max.apply(Math,set10u) + "%");
+                $("#10smax").html(Math.max.apply(Math,set10s) + "%");
+                $("#10umin").html(Math.min.apply(Math,set10u) + "%");
+                $("#10smin").html(Math.min.apply(Math,set10s) + "%");
+                var finalSet10u = arrayHandler(set10u);
+                var finalSet10s = arrayHandler(set10s);
+                $("#10cuu").html(finalSet10u[0]);
+                $("#10csu").html("-");
+                $("#10cud").html(finalSet10u[1]);
+                $("#10csd").html("-");
+                $("#10avgu").html(finalSet10u[2]);
+                $("#10avgs").html(finalSet10s[2]);
+                
+                $("#11umax").html(Math.max.apply(Math,set11u) + "%");
+                $("#11smax").html(Math.max.apply(Math,set11s) + "%");
+                $("#11umin").html(Math.min.apply(Math,set11u) + "%");
+                $("#11smin").html(Math.min.apply(Math,set11s) + "%");
+                var finalSet11u = arrayHandler(set11u);
+                var finalSet11s = arrayHandler(set11s);
+                $("#11cuu").html(finalSet11u[0]);
+                $("#11csu").html("-");
+                $("#11cud").html(finalSet11u[1]);
+                $("#11csd").html("-");
+                $("#11avgu").html(finalSet11u[2]);
+                $("#11avgs").html(finalSet11s[2]);
+                
+                $("#12umax").html(Math.max.apply(Math,set12u) + "%");
+                $("#12smax").html(Math.max.apply(Math,set12s) + "%");
+                $("#12umin").html(Math.min.apply(Math,set12u) + "%");
+                $("#12smin").html(Math.min.apply(Math,set12s) + "%");
+                var finalSet12u = arrayHandler(set12u);
+                var finalSet12s = arrayHandler(set12s);
+                $("#12cuu").html(finalSet12u[0]);
+                $("#12csu").html("-");
+                $("#12cud").html(finalSet12u[1]);
+                $("#12csd").html("-");
+                $("#12avgu").html(finalSet12u[2]);
+                $("#12avgs").html(finalSet12s[2]);
 
-                $("#03avgu").html(Number(total03u/count03u).toFixed(2) + "%");
-                $("#03avgs").html(Number(total03s/count03s).toFixed(2) + "%");
-                
-                $("#04avgu").html(Number(total04u/count04u).toFixed(2) + "%");
-                $("#04avgs").html(Number(total04s/count04s).toFixed(2) + "%");
-                
-                $("#05avgu").html(Number(total05u/count05u).toFixed(2) + "%");
-                $("#05avgs").html(Number(total05s/count05s).toFixed(2) + "%");
-                
-                $("#06avgu").html(Number(total06u/count06u).toFixed(2) + "%");
-                $("#06avgs").html(Number(total06s/count06s).toFixed(2) + "%");
-                
-                $("#07avgu").html(Number(total07u/count07u).toFixed(2) + "%");
-                $("#07avgs").html(Number(total07s/count07s).toFixed(2) + "%");
-                
-                $("#08avgu").html(Number(total08u/count08u).toFixed(2) + "%");
-                $("#08avgs").html(Number(total08s/count08s).toFixed(2) + "%");
-                
-                $("#09avgu").html(Number(total09u/count09u).toFixed(2) + "%");
-                $("#09avgs").html(Number(total09s/count09s).toFixed(2) + "%");
-                
-                $("#10avgu").html(Number(total10u/count10u).toFixed(2) + "%");
-                $("#10avgs").html(Number(total10s/count10s).toFixed(2) + "%");
-                
-                $("#11avgu").html(Number(total11u/count11u).toFixed(2) + "%");
-                $("#11avgs").html(Number(total11s/count11s).toFixed(2) + "%");
-                
-                $("#12avgu").html(Number(total12u/count12u).toFixed(2) + "%");
-                $("#12avgs").html(Number(total12s/count12s).toFixed(2) + "%");
-                
                 // 处理表格颜色
                 var upReg = new RegExp(".*up$");
-                var avgUpReg = new RegExp(".*avgu$")
+                var avgUpReg = new RegExp(".*avgu$");
                 var shockReg = new RegExp(".*shock");
                 $("table td").each(function () {
                     var tdId = $(this).attr("id");
                     if (upReg.test(tdId) || avgUpReg.test(tdId)){
                         var num = parseFloat($(this).html());
                         if(num && num < 0){
-                            $(this).css("background-color","#921F28")
+                            $(this).css("background-color","#14B438");  //"#921F28"
                             $(this).css("color","#FFFFFF")
                         }else if (num && num>0){
-                            $(this).css("background-color","#14B438")
+                            $(this).css("background-color","#921F28");
                             $(this).css("color","#FFFFFF")
                         }
                     }
@@ -478,6 +656,18 @@
         });
         return years;
     }
-
+    
+    // 计算数组符合条件的数的个数，平均值
+    function arrayHandler(arr) {
+        var sum = 0;
+        var great = 0, less = 0;
+        for(var j = 0,len = arr.length; j < len; j++){
+            sum += arr[j];
+            if (arr[j] > 0){great += 1};
+            if (arr[j] < 0){less += 1};
+        }
+        var avg = Number(sum/arr.length).toFixed(2) + "%";
+        return [great, less, avg]
+    }
 </script>
 </html>
