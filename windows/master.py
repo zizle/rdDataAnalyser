@@ -18,6 +18,7 @@ from windows.net_holding import NetHoldingWindow
 from windows.variety_price import VarietyPriceWindow
 from windows.main_contract import MainContractWindow
 from windows.sys_window import SysWindow
+from utils.saver import get_desktop_path, open_excel
 
 
 class HRMainWindow(QMainWindow):
@@ -72,6 +73,11 @@ class HRMainWindow(QMainWindow):
         export_excel = QAction('导出Excel', self)
         export_excel.setStatusTip("导出数据到Excel文件")
         export_excel.triggered.connect(self.export_excel)
+        # 导出表格
+        self.export_table = QAction('导出数据表', self)
+        self.export_table.setEnabled(False)
+        self.export_table.setStatusTip("导出季节图表数据到Excel文件")
+        self.export_table.triggered.connect(self.export_table_data)
         """将子菜单添加到父菜单"""
         # 功能菜单
         active_menu.addAction(price_holding)
@@ -85,6 +91,7 @@ class HRMainWindow(QMainWindow):
         system_menu.addAction(variety_price_btn)
         # 导出数据菜单
         export_data.addAction(export_excel)
+        export_data.addAction(self.export_table)
 
         # 中心提示显示-首页展示
         attention_label = QLabel("请点击左上角'功能选择'菜单\n选择您要的功能选项")
@@ -199,7 +206,7 @@ class HRMainWindow(QMainWindow):
         if not isinstance(current_window, (NetHoldingWindow, VarietyPriceWindow, MainContractWindow)):
             return  # 非操作窗口返回
         # 保存位置选择,默认桌面
-        desktop_path = self.get_desktop_path()
+        desktop_path = get_desktop_path()
         save_path = QFileDialog.getExistingDirectory(self, "选择保存的位置", desktop_path)
         # print(save_path, type(save_path))
         # 实例化一个Workbook()对象(即excel文件)
@@ -243,17 +250,23 @@ class HRMainWindow(QMainWindow):
         # 自定义对话框询问是否打开文件
         open_dialog = QMessageBox.question(self, "成功", "导出保存成功！\n是否现在打开？", QMessageBox.Yes | QMessageBox.No)
         if open_dialog == QMessageBox.Yes:
-            self.open_excel(file_path)  # 调用Microsoft Excel 打开文件
+            open_excel(file_path)  # 调用Microsoft Excel 打开文件
 
-    @staticmethod
-    def open_excel(path):
-        """调用Microsoft Excel打开"""
-        xl_app = win32com.client.Dispatch("Excel.Application")
-        xl_app.Visible = True  # 是否显示Excel文件
-        xl_app.Workbooks.Open(path)  # 参数:文件path
+    def export_table_data(self):
+        """导出季节图表的表格数据"""
+        # 获取当前窗口的当前网页
+        cur_window = self.window_stack.currentWidget()
+        cur_window.export_table_signal.emit()  # 发出信号
 
-    @staticmethod
-    def get_desktop_path():
-        """获取用户桌面路径"""
-        ilist = shell.SHGetSpecialFolderLocation(0, shellcon.CSIDL_DESKTOP)
-        return shell.SHGetPathFromIDList(ilist).decode("utf-8")
+    # @staticmethod
+    # def open_excel(path):
+    #     """调用Microsoft Excel打开"""
+    #     xl_app = win32com.client.Dispatch("Excel.Application")
+    #     xl_app.Visible = True  # 是否显示Excel文件
+    #     xl_app.Workbooks.Open(path)  # 参数:文件path
+    #
+    # @staticmethod
+    # def get_desktop_path():
+    #     """获取用户桌面路径"""
+    #     ilist = shell.SHGetSpecialFolderLocation(0, shellcon.CSIDL_DESKTOP)
+    #     return shell.SHGetPathFromIDList(ilist).decode("utf-8")
