@@ -208,6 +208,8 @@ class HRMainWindow(QMainWindow):
         # 保存位置选择,默认桌面
         desktop_path = get_desktop_path()
         save_path = QFileDialog.getExistingDirectory(self, "选择保存的位置", desktop_path)
+        if not save_path:
+            return
         # print(save_path, type(save_path))
         # 实例化一个Workbook()对象(即excel文件)
         excel_book = xlwt.Workbook()
@@ -245,7 +247,7 @@ class HRMainWindow(QMainWindow):
             excel_name = exchange + variety + "权重价格指数" + cur_time
         else:
             return
-        file_path = save_path + "/" + excel_name + ".xls"
+        file_path = save_path + "/" + excel_name + ".xlsx"
         excel_book.save(file_path)
         # 自定义对话框询问是否打开文件
         open_dialog = QMessageBox.question(self, "成功", "导出保存成功！\n是否现在打开？", QMessageBox.Yes | QMessageBox.No)

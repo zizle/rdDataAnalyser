@@ -21,7 +21,7 @@ DB_DIR = os.path.join(BASE_DIR, 'data/rd_dev.db')
 # DB_DIR = os.path.join(BASE_DIR, 'data/rd_pro.db')
 FILE_DIR = os.path.join(BASE_DIR, "data")
 
-VERSION = '2.2'
+VERSION = '2.2.1'
 RESEARCH_LIB = ['中国金融期货交易所', '上海期货交易所', '大连商品交易所', '郑州商品交易所']  # 研究所
 
 with open("data/goodsLib.dat", 'r', encoding="utf-8") as f:

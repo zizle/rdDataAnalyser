@@ -362,8 +362,8 @@ class VarietyPriceWindow(AncestorWindow):
                     # 计算涨跌
                     up_down = None
                     if last_price:
-                        up_down = "%.4f" % ((last - last_price) / last_price)
-                        up_down = "%.2f" % (float(up_down) * 100)
+                        up_down = "%.4f" % ((last - last_price) / last_price) if last_price else "-"
+                        up_down = "%.2f" % (float(up_down) * 100) if last_price else "-"
                     last_price = last
                     # 计算波幅
                     data_set = []
@@ -371,8 +371,9 @@ class VarietyPriceWindow(AncestorWindow):
                         data_set.append(int(item[1]))
                     min_price = min(data_set)
                     max_price = max(data_set)
-                    shock = "%.4f" % ((max_price - min_price) / min_price)  # 波幅
-                    shock = "%.2f" % (float(shock) * 100)
+
+                    shock = "%.4f" % ((max_price - min_price) / min_price) if min_price else "-"# 波幅
+                    shock = "%.2f" % (float(shock) * 100) if min_price else "-"
                     new_month_data[y][m] = []
                     new_month_data[y][m].append(up_down)
                     new_month_data[y][m].append(shock)
@@ -394,23 +395,26 @@ class VarietyPriceWindow(AncestorWindow):
         return json.dumps(finally_data)
 
     def download_requested(self, download_item):
-        """支持页面下载文件"""
-        if not download_item.isFinished() and download_item.state() == 0:
-            self.loading(download_item, title="品种权重指数季节表")
-
-    def loading(self, download_item, title):
         # 保存位置选择,默认桌面
-        desktop_path = get_desktop_path()
-        save_path = QFileDialog.getExistingDirectory(self, "选择保存的位置", desktop_path)
-        cur_time = datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d")
-        excel_name = self.exchange_lib.currentText() + self.variety_lib.currentText() + title + cur_time
-        file_path = save_path + "/" + excel_name + ".xls"
-        print(file_path)
-        download_item.setPath(file_path)
-        download_item.accept()
-        self.season_table_file = file_path
-        print(self.season_table_file)
-        download_item.finished.connect(self.download_finished)
+        if not download_item.isFinished() and download_item.state() == 0:
+            cur_window = self.parent().parent().window_stack.currentWidget()
+            if cur_window.name == "variety_price":
+                title = "品种权重指数季节表"
+            elif cur_window.name == "main_contract":
+                title = "主力合约指数季节表"
+            else:
+                return
+            desktop_path = get_desktop_path()
+            save_path = QFileDialog.getExistingDirectory(self, "选择保存的位置", desktop_path)
+            if not save_path:
+                return
+            cur_time = datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d")
+            excel_name = cur_window.exchange_lib.currentText() + cur_window.variety_lib.currentText() + title + cur_time
+            file_path = save_path + "/" + excel_name + ".xls"
+            download_item.setPath(file_path)
+            download_item.accept()
+            self.season_table_file = file_path
+            download_item.finished.connect(self.download_finished)
 
     def download_finished(self):
         try:
@@ -420,7 +424,7 @@ class VarietyPriceWindow(AncestorWindow):
                     open_excel(self.season_table_file)  # 调用Microsoft Excel 打开文件
                 self.season_table_file = None
         except Exception as e:
-            print(e)
+            pass
 
 
 class ConfirmQueryThread(AncestorThread):
