@@ -15,34 +15,6 @@ from utils.saver import get_desktop_path, open_excel
 class MainContractWindow(VarietyPriceWindow):
     name = "main_contract"
 
-    def download_requested(self, download_item):
-        """支持页面下载文件"""
-        if not download_item.isFinished() and download_item.state() == 0:
-            self.loading(download_item, title="主力合约指数季节表")
-
-    def loading(self, download_item, title):
-        # 保存位置选择,默认桌面
-        desktop_path = get_desktop_path()
-        save_path = QFileDialog.getExistingDirectory(self, "选择保存的位置", desktop_path)
-        cur_time = datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d")
-        excel_name = self.exchange_lib.currentText() + self.variety_lib.currentText() + title + cur_time
-        file_path = save_path + "/" + excel_name + ".xls"
-        print(file_path)
-        download_item.setPath(file_path)
-        download_item.accept()
-        self.season_table_file = file_path
-        download_item.finished.connect(self.download_finished)
-
-    def download_finished(self):
-        try:
-            if self.season_table_file:
-                open_dialog = QMessageBox.question(self, "成功", "导出保存成功！\n是否现在打开？", QMessageBox.Yes | QMessageBox.No)
-                if open_dialog == QMessageBox.Yes:
-                    open_excel(self.season_table_file)  # 调用Microsoft Excel 打开文件
-                self.season_table_file = None
-        except Exception as e:
-            print(e)
-
     def confirm(self):
         """确认按钮点击"""
         # 开启定时器
