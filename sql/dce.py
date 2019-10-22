@@ -76,6 +76,13 @@ class DCEWorker(DataBaseWorker):
         if self.exist_rkg_today(date):
             flag = 1
         for item in data_list:
+            # if item.product_name not in['m']:
+            #     print(item.product_name, item.contract_id, '已存在')
+            #     continue
+            # if item.contract_id not in ['1909']:
+            #     print(item.product_name, item.contract_id, '已存在')
+            #     continue
+            # print(item.product_name, item.contract_id, '进行保存')
             if flag == 1:
                 if self.exist_rkg(item):
                     print('当前rkg_item已存在', item.date, item.product_name, item.contract_id, item.rank)

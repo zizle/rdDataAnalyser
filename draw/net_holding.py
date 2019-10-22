@@ -3,6 +3,8 @@
 # author: zizle
 
 import datetime
+import matplotlib
+matplotlib.use('Qt5Agg')
 import matplotlib.ticker as mtick
 import matplotlib.dates as mdates
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas

@@ -410,7 +410,7 @@ def create_source_file():
 
 #
 # if __name__ == '__main__':
-#     if os.path.exists("data/rd_dev.db"):
+#     if os.path.exists("data/rd_pro.db"):
 #         print('数据库已存在')
 #     create_table()
 #     # create_source_file()
