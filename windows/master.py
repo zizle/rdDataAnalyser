@@ -13,7 +13,6 @@ from PyQt5.QtWidgets import (QMainWindow, QAction,
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon,QFont, QPalette
 
-from settings import VERSION
 from windows.net_holding import NetHoldingWindow
 from windows.variety_price import VarietyPriceWindow
 from windows.main_contract import MainContractWindow
@@ -24,7 +23,7 @@ from utils.saver import get_desktop_path, open_excel
 class HRMainWindow(QMainWindow):
     def __init__(self):
         super(HRMainWindow, self).__init__()
-        self.setWindowTitle("瑞达期货研究院持仓研究系统 " + VERSION)
+        self.setWindowTitle("瑞达期货研究院持仓研究系统2019.11")
         self.setWindowIcon(QIcon('static/Icon.png'))
         main_menu = self.menuBar()
         """主菜单"""
