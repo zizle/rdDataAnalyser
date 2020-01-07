@@ -79,7 +79,7 @@ class DCEWorker(DataBaseWorker):
             # if item.product_name not in['m']:
             #     print(item.product_name, item.contract_id, '已存在')
             #     continue
-            # if item.contract_id not in ['1909']:
+            # if item.contract_id not in ['2005']:
             #     print(item.product_name, item.contract_id, '已存在')
             #     continue
             # print(item.product_name, item.contract_id, '进行保存')
