@@ -229,7 +229,7 @@ class SysWindow(AncestorWindow):
 
         elif lib == "郑州商品交易所":
             add_p = add_p
-            add_c = add_c.lower()
+            add_c = add_c.upper()
             if add_p not in GOODS_LIB["czce"]:
                 GOODS_LIB["czce"].append(add_p)
                 CZCE_PRODUCT_NAMES[add_p] = add_c
