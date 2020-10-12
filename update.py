@@ -178,8 +178,7 @@ class SHFESpider(object):
             #     product_filename = os.path.join(FILE_DIR, "shfe.p.dat")
             #     with open(product_filename, 'w', encoding='utf-8') as f:
             #         f.write(str(SHFE_PRODUCT_NAMES))
-
-            item.product_name = SHFE_PRODUCT_NAMES.get(product_name)  # 商品名称-英文
+            item.product_name = SHFE_PRODUCT_NAMES.get(product_name, '')  # 商品名称-英文（20201012默认''防止没有的品种后续strip报错）
             delivery_month = data_dict.get('DELIVERYMONTH').strip(' ')  # 合约代码
             if delivery_month == '小计':
                 delivery_month = 'subtotal'
