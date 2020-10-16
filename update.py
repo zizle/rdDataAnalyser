@@ -196,8 +196,11 @@ class SHFESpider(object):
             item.volume = data_dict.get('VOLUME') if data_dict.get('VOLUME') or data_dict.get('VOLUME') == 0 else None  # 成交手
             item.open_interest = data_dict.get('OPENINTEREST') if data_dict.get('OPENINTEREST') or data_dict.get('OPENINTEREST') == 0 else None  # 持仓手
             item.open_interest_chg = data_dict.get('OPENINTERESTCHG') if data_dict.get('OPENINTERESTCHG') or data_dict.get('OPENINTERESTCHG') == 0 else None  # 变化
-
-            detail_list.append(item)
+            """ 2020-10-16修改: 出现的原油TAS数据持仓量为None导致后面更新价格指数错误 
+                剔除持仓量为None的数据
+            """
+            if item.open_interest is not None:
+                detail_list.append(item)
         # 各商品合计信息
         total_data = json_dict.get('o_curproduct', [])  # 结果也是字典列表
         if not total_data:
