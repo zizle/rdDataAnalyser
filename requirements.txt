@@ -34,7 +34,7 @@ pypiwin32==223
 PyQt5==5.10
 python-dateutil==2.7.3
 pytz==2018.5
-pywin32==224
+pywin32==301
 pywin32-ctypes==0.2.0
 requests==2.20.0
 scipy==1.1.0
